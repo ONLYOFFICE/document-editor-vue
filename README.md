@@ -5,3 +5,9 @@ Install the project dependencies:
 
 Create package:
 `npm run build && npm pack`
+
+Storybook build: 
+`npm run build-storybook`
+
+Storybook start: 
+`npm run storybook`
