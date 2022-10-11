@@ -1,5 +1,5 @@
 import DocumentEditor from "./DocumentEditor.vue";
-import config from "./../../config/config.json";
+import config from "../../config/default.json";
 
 export default {
   title: 'DocumentEditor',
