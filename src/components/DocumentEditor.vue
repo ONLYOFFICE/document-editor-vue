@@ -104,7 +104,7 @@ export default defineComponent({
             lang: this.editorConfig_lang,
           },
           events: {
-            onAppReady: this.events_onAppReady,
+            onAppReady: this.onAppReady,
             onDocumentStateChange: this.events_onDocumentStateChange,
             onMetaChange: this.events_onMetaChange,
             onDocumentReady: this.events_onDocumentReady,
@@ -135,6 +135,10 @@ export default defineComponent({
         console.error(err);
         this.events_onError!(err);
       }
+    },
+    onAppReady() {
+      const id = this.id || "";
+      this.events_onAppReady!(window.DocEditor.instances[id]);
     },
     onChangeProps () {
       const id = this.id || "";
