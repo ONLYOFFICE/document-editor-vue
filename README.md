@@ -119,6 +119,10 @@ git clone https://github.com/ONLYOFFICE/document-editor-vue
 ```
 npm install
 ```
+### Test the component:
+```
+npm run test
+```
 ### Build the project:
 ```
 npm run build
