@@ -2,9 +2,11 @@ const loadScript = async (url: string, id: string) => {
   return new Promise((resolve, reject) => {
     try {
       if (document.getElementById(id)) {
+        //@ts-ignore
         if (window.DocsAPI) return resolve(null);
 
         let intervalHandler = setInterval(() => {
+          //@ts-ignore
           if (!window.DocsAPI) return;
 
           clearInterval(intervalHandler);

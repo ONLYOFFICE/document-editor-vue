@@ -13,7 +13,7 @@
     "baseUrl": ".",
     "declaration": true,
     "declarationDir": "lib",
-    "types": [],
+    "types": ["jest"],
     "paths": {
       "@/*": ["src/*"]
     },
