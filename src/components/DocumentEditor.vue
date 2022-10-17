@@ -1,3 +1,19 @@
+/*
+* (c) Copyright Ascensio System SIA 2022
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 <template>
   <div :id="id"></div>
 </template>
@@ -28,9 +44,24 @@ export default defineComponent({
     width: String,
 
     events_onAppReady: Function,
-    events_onDocumentReady: Function,
     events_onDocumentStateChange: Function,
-    events_onError: Function
+    events_onMetaChange: Function,
+    events_onDocumentReady: Function,
+    events_onInfo: Function,
+    events_onWarning: Function,
+    events_onError: Function,
+    events_onRequestSharingSettings: Function,
+    events_onRequestRename: Function,
+    events_onMakeActionLink: Function,
+    events_onRequestInsertImage: Function,
+    events_onRequestSaveAs: Function,
+    events_onRequestMailMergeRecipients: Function,
+    events_onRequestCompareFile: Function,
+    events_onRequestEditRights: Function,
+    events_onRequestHistory: Function,
+    events_onRequestHistoryClose: Function,
+    events_onRequestHistoryData: Function,
+    events_onRequestRestore: Function,
   },
   mounted() {
     let url = this.documentServerUrl;
@@ -89,10 +120,25 @@ export default defineComponent({
             lang: this.editorConfig_lang,
           },
           events: {
-            onAppReady: this.events_onAppReady,
-            onDocumentReady: this.events_onDocumentReady,
+            onAppReady: this.onAppReady,
             onDocumentStateChange: this.events_onDocumentStateChange,
+            onMetaChange: this.events_onMetaChange,
+            onDocumentReady: this.events_onDocumentReady,
+            onInfo: this.events_onInfo,
+            onWarning: this.events_onWarning,
             onError: this.events_onError,
+            onRequestSharingSettings: this.events_onRequestSharingSettings,
+            onRequestRename: this.events_onRequestRename,
+            onMakeActionLink: this.events_onMakeActionLink,
+            onRequestInsertImage: this.events_onRequestInsertImage,
+            onRequestSaveAs: this.events_onRequestSaveAs,
+            onRequestMailMergeRecipients: this.events_onRequestMailMergeRecipients,
+            onRequestCompareFile: this.events_onRequestCompareFile,
+            onRequestEditRights: this.events_onRequestEditRights,
+            onRequestHistory: this.events_onRequestHistory,
+            onRequestHistoryClose: this.events_onRequestHistoryClose,
+            onRequestHistoryData: this.events_onRequestHistoryData,
+            onRequestRestore: this.events_onRequestRestore
           },
           height: this.height,
           type: this.type,
@@ -105,6 +151,10 @@ export default defineComponent({
         console.error(err);
         this.events_onError!(err);
       }
+    },
+    onAppReady() {
+      const id = this.id || "";
+      this.events_onAppReady!(window.DocEditor.instances[id]);
     },
     onChangeProps () {
       const id = this.id || "";
