@@ -19,8 +19,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import loadScript from "../utils/loadScript";
+import { IConfig } from "../model/config";
 
 declare global {
   interface Window {
@@ -34,7 +35,10 @@ export default defineComponent({
   props: {
     id: String,
     documentServerUrl: String,
-    config: Object,
+    config: {
+      type: Object as PropType<IConfig>,
+      required: true
+    },
     document_fileType: String,
     document_title: String,
     documentType: String,
