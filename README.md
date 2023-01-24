@@ -23,6 +23,7 @@ Find below the component usage example:
     documentServerUrl="http://documentserver/"
     :config="config"
     :events_onDocumentReady="onDocumentReady"
+    :onLoadComponentError="onLoadComponentError"
     /> 
 </template>
 
@@ -54,6 +55,20 @@ export default defineComponent({
   methods: {
     onDocumentReady() {
       console.log("Document is loaded");
+    },
+    onLoadComponentError (errorCode, errorDescription) {
+      switch(errorCode) {
+        case -1: // Unknown error loading component
+          console.log(errorDescription);
+          break;
+
+        case -2: // Error load DocsAPI from http://documentserver/
+          console.log(errorDescription);
+          break;
+
+        case -3: // DocsAPI is not defined
+          console.log(errorDescription);
+          break;
     }
   },
 });
