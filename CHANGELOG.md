@@ -1,6 +1,6 @@
 # Change Log
 
-##
+## 1.2.0
 - added component property onLoadComponentError(), fixed issue [#7](https://github.com/ONLYOFFICE/onlyoffice-alfresco/issues/7)
 
 ## 1.1.0
