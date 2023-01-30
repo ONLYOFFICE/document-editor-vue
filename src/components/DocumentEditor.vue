@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2022
+* (c) Copyright Ascensio System SIA 2023
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -33,8 +33,14 @@ declare global {
 export default defineComponent({
   name: 'DocumentEditor',
   props: {
-    id: String,
-    documentServerUrl: String,
+    id: {
+      type: String,
+      required: true
+    },
+    documentServerUrl: {
+      type: String,
+      required: true
+    },
     config: {
       type: Object as PropType<IConfig>,
       required: true
@@ -46,6 +52,8 @@ export default defineComponent({
     height: String,
     type: String,
     width: String,
+
+    onLoadComponentError: Function,
 
     events_onAppReady: Function,
     events_onDocumentStateChange: Function,
@@ -74,7 +82,7 @@ export default defineComponent({
     const docApiUrl = `${url}web-apps/apps/api/documents/api.js`;
     loadScript(docApiUrl, "onlyoffice-api-script")
       .then(() => this.onLoad())
-      .catch((err) => console.error(err));
+      .catch(()=> {this.onError(-2)});
   },
   unmounted() {
     const id = this.id || "";
@@ -104,7 +112,7 @@ export default defineComponent({
        try {
         const id = this.id || "";
 
-        if (!window.DocsAPI) throw new Error("DocsAPI is not defined");
+        if (!window.DocsAPI) this.onError(-3);
         if (window?.DocEditor?.instances[id]) {
           console.log("Skip loading. Instance already exists", id);
           return;
@@ -153,7 +161,28 @@ export default defineComponent({
         window.DocEditor.instances[id] = editor;
       } catch (err: any) {
         console.error(err);
-        this.events_onError!(err);
+        this.onError(-1);
+      }
+    },
+    onError(errorCode: Number) {
+      let message;
+
+      switch(errorCode) {
+        case -2:
+          message = "Error load DocsAPI from " + this.documentServerUrl;
+          break;
+        case -3:
+          message = "DocsAPI is not defined";
+          break;
+        default:
+          message = "Unknown error loading component";
+          errorCode = -1;
+      }
+
+      if (typeof this.onLoadComponentError == "undefined") {
+        console.error(message);
+      } else {
+        this.onLoadComponentError(errorCode, message);
       }
     },
     onAppReady() {
