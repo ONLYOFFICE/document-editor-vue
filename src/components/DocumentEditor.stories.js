@@ -77,6 +77,7 @@ FormTemplate.args = {
     config: {
         document: {
             fileType: "oform",
+            key: "oform" + Math.random(),
             title: "demo.oform",
             url: config.demoStorage + "demo.oform",
         },
@@ -92,6 +93,7 @@ DocumentTemplate.args = {
     config: {
         document: {
             fileType: "docx",
+            key: "docx" + Math.random(),
             title: "demo.docx",
             url: config.demoStorage + "demo.docx",
         },
@@ -107,6 +109,7 @@ SpreadsheetTemplate.args = {
     config: {
         document: {
             fileType: "xlsx",
+            key: "xlsx" + Math.random(),
             title: "demo.xlsx",
             url: config.demoStorage + "demo.xlsx",
         },
@@ -122,6 +125,7 @@ PresentationTemplate.args = {
     config: {
         document: {
             fileType: "pptx",
+            key: "pptx" + Math.random(),
             title: "demo.pptx",
             url: config.demoStorage + "demo.pptx",
         },
