@@ -2,6 +2,8 @@
 
 This repo contains the Vue component for [ONLYOFFICE Document Server](https://github.com/ONLYOFFICE/DocumentServer).
 
+**Please note**: Before working with this component, you need to install ONLYOFFICE Docs. To do so, you can use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended).
+
 ## Installation
 Install it from **npm** in your project. Run:
 
