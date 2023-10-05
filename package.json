@@ -41,7 +41,7 @@
     "@storybook/builder-webpack5": "^6.5.14",
     "@storybook/manager-webpack5": "^6.5.14",
     "@storybook/testing-library": "^0.0.13",
-    "@storybook/vue3": "^6.5.14",
+    "@storybook/vue3": "^7.4.6",
     "@types/jest": "^24.9.1",
     "babel-loader": "^8.2.5",
     "@vue/test-utils": "^2.0.0-0",
