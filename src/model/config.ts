@@ -25,7 +25,8 @@ export interface IConfig {
     key: string;
     referenceData?: {
       fileKey: string,
-      instanceId: string
+      instanceId: string,
+      key: string
     }
     title: string;
     url: string;
@@ -37,6 +38,9 @@ export interface IConfig {
       sharingSettings?: any[];
     };
     permissions?: {
+      /**
+       * @deprecated Deprecated since version 5.5, please add the onRequestRestore field instead.
+       */
       changeHistory?: boolean;
       chat?: boolean;
       comment?: boolean;
@@ -51,6 +55,9 @@ export interface IConfig {
       modifyFilter?: boolean;
       print?: boolean;
       protect?: boolean;
+      /**
+       * @deprecated Deprecated since version 6.0, please add the onRequestRename field instead.
+       */
       rename?: boolean;
       review?: boolean;
       reviewGroups?: string[];
@@ -72,9 +79,16 @@ export interface IConfig {
     region?: string;
     templates?: any[];
     user?: {
+      /**
+       * @deprecated Deprecated since version 4.2, please use name instead.
+       */
       firstname?: string;
       group?: string;
       id?: string;
+      image?: string;
+      /**
+       * @deprecated Deprecated since version 4.2, please use name instead.
+       */
       lastname?: string;
       name?: string;
     };
@@ -84,7 +98,13 @@ export interface IConfig {
         label?: string;
       };
       autosave?: boolean;
+      /**
+       * @deprecated Deprecated since version 7.1, please use the document.permissions.chat parameter instead.
+       */
       chat?: boolean;
+      /**
+       * @deprecated Deprecated since version 6.3, please use the document.permissions.editCommentAuthorOnly and document.permissions.deleteCommentAuthorOnly fields instead.
+       */
       commentAuthorOnly?: boolean;
       comments?: boolean;
       compactHeader?: boolean;
@@ -118,6 +138,7 @@ export interface IConfig {
       macros?: boolean;
       macrosMode?: string;
       mentionShare?: boolean;
+      mobileForceView?: boolean;
       plugins?: boolean;
       review?: {
         hideReviewDisplay?: boolean;
@@ -126,11 +147,24 @@ export interface IConfig {
         showReviewChanges?: boolean;
         trackChanges?: boolean;
       };
+      /**
+       * @deprecated Deprecated since version 7.0. Please use the review.reviewDisplay parameter instead.
+       */
       reviewDisplay?: string;
+      /**
+       * @deprecated Deprecated since version 7.0. Please use the review.showReviewChanges parameter instead.
+       */
       showReviewChanges?: boolean;
+      /**
+       * @deprecated Deprecated since version 7.1. Please use the features.spellcheck parameter instead.
+       */
       spellcheck?: boolean;
+      submitForm?: boolean;
       toolbarHideFileName?: boolean;
       toolbarNoTabs?: boolean;
+      /**
+       * @deprecated Deprecated since version 7.0. Please use the review.trackChanges parameter instead.
+       */
       trackChanges?: boolean;
       uiTheme?: string;
       unit?: string;
@@ -146,6 +180,9 @@ export interface IConfig {
     plugins?: {
       autostart?: string[];
       pluginsData?: string[];
+      /**
+       * @deprecated Deprecated since version 4.3, please use the absolute URLs in pluginsData field.
+       */
       url?: string;
     };
   };
@@ -161,7 +198,11 @@ export interface IConfig {
     onMakeActionLink?: (event: object) => void;
     onOutdatedVersion?: (event: object) => void;
     onPluginsReady?: (event: object) => void;
+    onReady?: (event: object) => void;
     onRequestClose?: (event: object) => void;
+    /**
+     * @deprecated Deprecated since version 7.5, please use onRequestSelectDocument instead.
+     */
     onRequestCompareFile?: (event: object) => void;
     onRequestCreateNew?: (event: object) => void;
     onRequestEditRights?: (event: object) => void;
@@ -169,11 +210,18 @@ export interface IConfig {
     onRequestHistoryClose?: (event: object) => void;
     onRequestHistoryData?: (event: object) => void;
     onRequestInsertImage?: (event: object) => void;
+    /**
+     * @deprecated Deprecated since version 7.5, please use onRequestSelectSpreadsheet instead.
+     */
     onRequestMailMergeRecipients?: (event: object) => void;
+    onRequestOpen?: (event: object) => void;
     onRequestReferenceData?: (event: object) => void;
+    onRequestReferenceSource?: (event: object) => void;
     onRequestRename?: (event: object) => void;
     onRequestRestore?: (event: object) => void;
     onRequestSaveAs?: (event: object) => void;
+    onRequestSelectDocument?: (event: object) => void;
+    onRequestSelectSpreadsheet?: (event: object) => void;
     onRequestSendNotify?: (event: object) => void;
     onRequestSharingSettings?: (event: object) => void;
     onRequestUsers?: (event: object) => void;
