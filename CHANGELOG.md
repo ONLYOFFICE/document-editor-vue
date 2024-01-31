@@ -1,5 +1,8 @@
 # Change Log
 
+##
+- improved load api.js
+
 ## 1.3.0
 - extended IConfig
 
