@@ -1,5 +1,8 @@
 # Change Log
 
+##
+- bump dependencies
+
 ## 1.3.0
 - extended IConfig
 
