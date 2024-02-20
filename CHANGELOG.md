@@ -1,6 +1,6 @@
 # Change Log
 
-##
+## 1.4.0
 - improved load api.js
 - bump dependencies
 - updated IConfig
