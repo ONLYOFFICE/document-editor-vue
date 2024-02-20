@@ -5,7 +5,7 @@ import typescript from "rollup-plugin-typescript2";
 import vue from "rollup-plugin-vue";
 import postcss from "rollup-plugin-postcss";
 
-import packageJson from "./package.json";
+const packageJson = require("./package.json");
 
 export default [
   {
@@ -25,7 +25,7 @@ export default [
     plugins: [
       peerDepsExternal(),
       resolve(),
-      typescript(),
+      typescript({ tsconfig: "./tsconfig.json" }),
       vue(),
       commonjs(),
       postcss()

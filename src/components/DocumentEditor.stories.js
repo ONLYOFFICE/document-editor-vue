@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2023
+* (c) Copyright Ascensio System SIA 2024
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import config from "../../config/default.json";
 export default {
   title: 'DocumentEditor',
   component: DocumentEditor,
+  tags: ["autodocs"],
   decorators: [() => ({ template: '<div style="height: 600px;"><story/></div>' })],
   argTypes: {
     documentType: {
