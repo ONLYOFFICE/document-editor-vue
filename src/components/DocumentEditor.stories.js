@@ -20,6 +20,7 @@ import config from "../../config/default.json";
 export default {
   title: 'DocumentEditor',
   component: DocumentEditor,
+  tags: ["autodocs"],
   decorators: [() => ({ template: '<div style="height: 600px;"><story/></div>' })],
   argTypes: {
     documentType: {
