@@ -67,13 +67,21 @@ export default defineComponent({
     events_onMakeActionLink: Function,
     events_onRequestInsertImage: Function,
     events_onRequestSaveAs: Function,
+    /**
+     * @deprecated Deprecated since version 7.5, please use events_onRequestSelectSpreadsheet instead.
+     */
     events_onRequestMailMergeRecipients: Function,
+    /**
+     * @deprecated Deprecated since version 7.5, please use events_onRequestSelectDocument instead.
+     */
     events_onRequestCompareFile: Function,
     events_onRequestEditRights: Function,
     events_onRequestHistory: Function,
     events_onRequestHistoryClose: Function,
     events_onRequestHistoryData: Function,
     events_onRequestRestore: Function,
+    events_onRequestSelectSpreadsheet: Function,
+    events_onRequestSelectDocument: Function,
   },
   mounted() {
     let url = this.documentServerUrl;
@@ -150,7 +158,9 @@ export default defineComponent({
             onRequestHistory: this.events_onRequestHistory,
             onRequestHistoryClose: this.events_onRequestHistoryClose,
             onRequestHistoryData: this.events_onRequestHistoryData,
-            onRequestRestore: this.events_onRequestRestore
+            onRequestRestore: this.events_onRequestRestore,
+            onRequestSelectSpreadsheet: this.events_onRequestSelectSpreadsheet,
+            onRequestSelectDocument: this.events_onRequestSelectDocument
           },
           height: this.height,
           type: this.type,
