@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2023
+* (c) Copyright Ascensio System SIA 2024
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,35 +17,66 @@
 const loadScript = async (url: string, id: string) => {
   return new Promise((resolve, reject) => {
     try {
-      if (document.getElementById(id)) {
-        //@ts-ignore
-        if (window.DocsAPI) return resolve(null);
+      // If DocsAPI is defined return resolve.
+      //@ts-ignore
+      if (window.DocsAPI) return resolve(null);
 
+      const existedScript = document.getElementById(id);
+
+      if (existedScript) {
+        // If the script element is found, wait for it to load.
         let intervalHandler = setInterval(() => {
-          //@ts-ignore
-          if (!window.DocsAPI) return;
+          const loading = existedScript.getAttribute("loading");
+          if (loading) {
+            // If the download is not completed, continue to wait.
+            return;
+          } else {
+            // If the download is completed, stop the wait.
+            clearInterval(intervalHandler);
 
-          clearInterval(intervalHandler);
+            // If DocsAPI is defined, after loading return resolve.
+            //@ts-ignore
+            if (window.DocsAPI) return resolve(null);
 
-          return resolve(null);
+            // If DocsAPI is not defined, delete the existing script and create a new one.
+            const script = _createScriptTag(id, url, resolve, reject);
+            existedScript.remove();
+            document.body.appendChild(script);
+          }
         }, 500);
       } else {
-        const script = document.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("id", id);
-
-        script.onload = resolve;
-        script.onerror = reject;
-
-        script.src = url;
-        script.async = true;
-
+        // If the script element is not found, create it.
+        const script = _createScriptTag(id, url, resolve, reject);
         document.body.appendChild(script);
       }
     } catch (e) {
       console.error(e);
     }
   });
+};
+
+const _createScriptTag = (id: string, url: string, resolve: (value: unknown) => void, reject: (reason?: any) => void) => {
+  const script = document.createElement("script");
+
+  script.id = id;
+  script.type = "text/javascript";
+  script.src = url;
+  script.async = true;
+
+  script.onload = () => {
+    // Remove attribute loading after loading is complete.
+    script.removeAttribute("loading");
+    resolve(null);
+  };
+  script.onerror = (error: any) => {
+    // Remove attribute loading after loading is complete.
+    script.removeAttribute("loading");
+    reject(error);
+  };
+
+  script.setAttribute("loading", "");
+
+  return script;
 };
 
 export default loadScript;
