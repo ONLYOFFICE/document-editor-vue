@@ -1,5 +1,8 @@
 # Change Log
 
+##
+- added props events_onRequestUsers
+
 ## 1.4.0
 - improved load api.js
 - bump dependencies

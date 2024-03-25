@@ -184,7 +184,7 @@ The application will be deployed on the web server (*http://localhost:3000* by d
 | `events_onRequestRestore` | (event: object) => void | null | no | The function called when the user is trying to restore the file version by clicking the _Restore_ button in the version history. |
 | `events_onRequestSelectSpreadsheet` | (event: object) => void | null | no | The function called when the user is trying to select recipients data by clicking the Mail merge button. |
 | `events_onRequestSelectDocument` | (event: object) => void | null | no | The function called when the user is trying to select a document for comparing or combining. |
-
+| `events_onRequestUsers` | (event: object) => void | null | no | The function called when  the user can select other users to mention in the comments, grant the access rights to edit the specific sheet ranges, or set the user avatars. |
 
 ## Storybook
 

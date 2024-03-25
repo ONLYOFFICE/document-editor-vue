@@ -82,6 +82,7 @@ export default defineComponent({
     events_onRequestRestore: Function,
     events_onRequestSelectSpreadsheet: Function,
     events_onRequestSelectDocument: Function,
+    events_onRequestUsers: Function,
   },
   mounted() {
     let url = this.documentServerUrl;
@@ -160,7 +161,8 @@ export default defineComponent({
             onRequestHistoryData: this.events_onRequestHistoryData,
             onRequestRestore: this.events_onRequestRestore,
             onRequestSelectSpreadsheet: this.events_onRequestSelectSpreadsheet,
-            onRequestSelectDocument: this.events_onRequestSelectDocument
+            onRequestSelectDocument: this.events_onRequestSelectDocument,
+            onRequestUsers: this.events_onRequestUsers
           },
           height: this.height,
           type: this.type,
