@@ -2,6 +2,7 @@
 
 ##
 - fix re-rendering of component after init editors
+- added props events_onRequestUsers
 
 ## 1.4.0
 - improved load api.js
