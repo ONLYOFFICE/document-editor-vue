@@ -22,6 +22,7 @@
 import { defineComponent, PropType } from 'vue';
 import loadScript from "../utils/loadScript";
 import { IConfig } from "../model/config";
+import cloneDeep from "lodash/cloneDeep";
 
 declare global {
   interface Window {
@@ -131,6 +132,8 @@ export default defineComponent({
           window.DocEditor = { instances: {} };
         }
 
+        var cloneConfig = cloneDeep(this.config);
+
         let initConfig = Object.assign({
           document: {
             fileType: this.document_fileType,
@@ -167,7 +170,7 @@ export default defineComponent({
           height: this.height,
           type: this.type,
           width: this.width,
-        }, this.config || {});
+        }, cloneConfig || {});
 
         const editor = window.DocsAPI.DocEditor(id, initConfig);
         window.DocEditor.instances[id] = editor;
