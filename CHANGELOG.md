@@ -1,5 +1,8 @@
 # Change Log
 
+##
+- fix re-rendering of component after init editors
+
 ## 1.4.0
 - improved load api.js
 - bump dependencies
