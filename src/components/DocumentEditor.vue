@@ -134,15 +134,8 @@ export default defineComponent({
 
         var cloneConfig = cloneDeep(this.config);
 
-        let initConfig = Object.assign({
-          document: {
-            fileType: this.document_fileType,
-            title: this.document_title,
-          },
+        var propsConfig: any = {
           documentType: this.documentType,
-          editorConfig: {
-            lang: this.editorConfig_lang,
-          },
           events: {
             onAppReady: this.onAppReady,
             onDocumentStateChange: this.events_onDocumentStateChange,
@@ -170,7 +163,20 @@ export default defineComponent({
           height: this.height,
           type: this.type,
           width: this.width,
-        }, cloneConfig || {});
+        };
+
+        const document = this.getDocument();
+        const editorConfig = this.getEditorConfig();
+
+        if (document !== null) {
+          propsConfig.document = document;
+        }
+
+        if (editorConfig !== null) {
+          propsConfig.editorConfig = editorConfig;
+        }
+
+        let initConfig = Object.assign(propsConfig, cloneConfig || {});
 
         const editor = window.DocsAPI.DocEditor(id, initConfig);
         window.DocEditor.instances[id] = editor;
@@ -178,6 +184,30 @@ export default defineComponent({
         console.error(err);
         this.onError(-1);
       }
+    },
+    getDocument() {
+      var document: any = null;
+
+      if (this.document_fileType) {
+        document = document || {};
+        document.fileType = this.document_fileType;
+      }
+      if (this.document_title) {
+        document = document || {};
+        document.document_title = this.document_title;
+      }
+
+      return document;
+    },
+    getEditorConfig() {
+      var editorConfig: any = null;
+
+      if (this.editorConfig_lang) {
+        editorConfig = editorConfig || {};
+        editorConfig.lang = this.editorConfig_lang;
+      }
+
+      return editorConfig;
     },
     onError(errorCode: Number) {
       let message;
