@@ -1,6 +1,7 @@
 # Change Log
 
 ##
+- added shardkey property
 - update IConfig for Document Server v8.3
 - IConfig->document is not required
 - fix re-rendering of component after init editors
