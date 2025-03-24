@@ -1,6 +1,7 @@
 # Change Log
 
 ##
+- update IConfig for Document Server v8.3
 - IConfig->document is not required
 - fix re-rendering of component after init editors
 - added props events_onRequestUsers
