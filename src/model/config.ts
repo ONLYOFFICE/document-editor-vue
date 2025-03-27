@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2024
+* (c) Copyright Ascensio System SIA 2025
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ export interface IConfig {
   token?: string;
   type?: string;
   width?: string;
-  document: {
+  document?: {
     fileType: string;
     key: string;
     referenceData?: {
@@ -73,6 +73,9 @@ export interface IConfig {
     };
     createUrl?: string;
     lang?: string;
+    /**
+     * @deprecated Deprecated since version 8.2, please use the region parameter instead.
+      */
     location?: string;
     mode?: string;
     recent?: any[];
@@ -102,6 +105,10 @@ export interface IConfig {
        * @deprecated Deprecated since version 7.1, please use the document.permissions.chat parameter instead.
        */
       chat?: boolean;
+      close: {
+        visible: boolean;
+        text: string;
+      }
       /**
        * @deprecated Deprecated since version 6.3, please use the document.permissions.editCommentAuthorOnly and document.permissions.deleteCommentAuthorOnly fields instead.
        */
@@ -132,14 +139,25 @@ export interface IConfig {
       logo?: {
         image?: string;
         imageDark?: string;
+        imageLight?: string;
         imageEmbedded?: string;
         url?: string;
+        visible?: boolean;
       };
       macros?: boolean;
       macrosMode?: string;
       mentionShare?: boolean;
+      mobile?: {
+        forceView?: boolean;
+        info?: boolean;
+        standardView?: boolean;
+      };
+      /**
+       * @deprecated Starting from version 8.2, please use the mobile parameter instead.
+       */
       mobileForceView?: boolean;
       plugins?: boolean;
+      pointerMode: 'select' | 'hand';
       review?: {
         hideReviewDisplay?: boolean;
         hoverMode?: boolean;
@@ -151,15 +169,22 @@ export interface IConfig {
        * @deprecated Deprecated since version 7.0. Please use the review.reviewDisplay parameter instead.
        */
       reviewDisplay?: string;
+      showHorizontalScroll?: boolean; 
       /**
        * @deprecated Deprecated since version 7.0. Please use the review.showReviewChanges parameter instead.
        */
       showReviewChanges?: boolean;
+      showVerticalScroll?: boolean;
+      slidePlayerBackground: string;
       /**
        * @deprecated Deprecated since version 7.1. Please use the features.spellcheck parameter instead.
        */
       spellcheck?: boolean;
-      submitForm?: boolean;
+      submitForm?: {
+        visible:  boolean,
+        resultMessage: string,
+
+      } | boolean;
       toolbarHideFileName?: boolean;
       toolbarNoTabs?: boolean;
       /**
@@ -168,6 +193,7 @@ export interface IConfig {
       trackChanges?: boolean;
       uiTheme?: string;
       unit?: string;
+      wordHeadingsColor?: string;
       zoom?: number;
     };
     embedded?: {
@@ -179,6 +205,10 @@ export interface IConfig {
     };
     plugins?: {
       autostart?: string[];
+      options?: {
+        all?: Object;
+        pluginGuid: Object;
+      };
       pluginsData?: string[];
       /**
        * @deprecated Deprecated since version 4.3, please use the absolute URLs in pluginsData field.
@@ -217,6 +247,7 @@ export interface IConfig {
     onRequestOpen?: (event: object) => void;
     onRequestReferenceData?: (event: object) => void;
     onRequestReferenceSource?: (event: object) => void;
+    onRequestRefreshFile?: (event: object) => void;
     onRequestRename?: (event: object) => void;
     onRequestRestore?: (event: object) => void;
     onRequestSaveAs?: (event: object) => void;
@@ -224,7 +255,10 @@ export interface IConfig {
     onRequestSelectSpreadsheet?: (event: object) => void;
     onRequestSendNotify?: (event: object) => void;
     onRequestSharingSettings?: (event: object) => void;
+    onRequestStartFilling: (event: object) => void;
     onRequestUsers?: (event: object) => void;
+    onSubmit?: (event: object) => void;
+    onUserActionRequired?: (event: object) => void;
     onWarning?: (event: object) => void;
   }
 };

@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2024
+* (c) Copyright Ascensio System SIA 2025
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 import { defineComponent, PropType } from 'vue';
 import loadScript from "../utils/loadScript";
 import { IConfig } from "../model/config";
+import cloneDeep from "lodash/cloneDeep";
 
 declare global {
   interface Window {
@@ -40,6 +41,10 @@ export default defineComponent({
     documentServerUrl: {
       type: String,
       required: true
+    },
+    shardkey: {
+      type: [String, Boolean], 
+      default: true
     },
     config: {
       type: Object as PropType<IConfig>,
@@ -82,13 +87,22 @@ export default defineComponent({
     events_onRequestRestore: Function,
     events_onRequestSelectSpreadsheet: Function,
     events_onRequestSelectDocument: Function,
+    events_onRequestUsers: Function,
   },
   mounted() {
     let url = this.documentServerUrl;
     if (!url!.endsWith("/")) url += "/";
 
-    const docApiUrl = `${url}web-apps/apps/api/documents/api.js`;
-    loadScript(docApiUrl, "onlyoffice-api-script")
+    let docsApiUrl = `${url}web-apps/apps/api/documents/api.js`;
+    if (this.shardkey) {
+      if (typeof this.shardkey === "boolean") {
+        docsApiUrl += `?shardkey=${this.config.document?.key}`;
+      } else {
+        docsApiUrl += `?shardkey=${this.shardkey}`;
+      }
+    }
+
+    loadScript(docsApiUrl, "onlyoffice-api-script")
       .then(() => this.onLoad())
       .catch(()=> {this.onError(-2)});
   },
@@ -130,15 +144,10 @@ export default defineComponent({
           window.DocEditor = { instances: {} };
         }
 
-        let initConfig = Object.assign({
-          document: {
-            fileType: this.document_fileType,
-            title: this.document_title,
-          },
+        var cloneConfig = cloneDeep(this.config);
+
+        var propsConfig: any = {
           documentType: this.documentType,
-          editorConfig: {
-            lang: this.editorConfig_lang,
-          },
           events: {
             onAppReady: this.onAppReady,
             onDocumentStateChange: this.events_onDocumentStateChange,
@@ -160,12 +169,26 @@ export default defineComponent({
             onRequestHistoryData: this.events_onRequestHistoryData,
             onRequestRestore: this.events_onRequestRestore,
             onRequestSelectSpreadsheet: this.events_onRequestSelectSpreadsheet,
-            onRequestSelectDocument: this.events_onRequestSelectDocument
+            onRequestSelectDocument: this.events_onRequestSelectDocument,
+            onRequestUsers: this.events_onRequestUsers
           },
           height: this.height,
           type: this.type,
           width: this.width,
-        }, this.config || {});
+        };
+
+        const document = this.getDocument();
+        const editorConfig = this.getEditorConfig();
+
+        if (document !== null) {
+          propsConfig.document = document;
+        }
+
+        if (editorConfig !== null) {
+          propsConfig.editorConfig = editorConfig;
+        }
+
+        let initConfig = Object.assign(propsConfig, cloneConfig || {});
 
         const editor = window.DocsAPI.DocEditor(id, initConfig);
         window.DocEditor.instances[id] = editor;
@@ -173,6 +196,30 @@ export default defineComponent({
         console.error(err);
         this.onError(-1);
       }
+    },
+    getDocument() {
+      var document: any = null;
+
+      if (this.document_fileType) {
+        document = document || {};
+        document.fileType = this.document_fileType;
+      }
+      if (this.document_title) {
+        document = document || {};
+        document.document_title = this.document_title;
+      }
+
+      return document;
+    },
+    getEditorConfig() {
+      var editorConfig: any = null;
+
+      if (this.editorConfig_lang) {
+        editorConfig = editorConfig || {};
+        editorConfig.lang = this.editorConfig_lang;
+      }
+
+      return editorConfig;
     },
     onError(errorCode: Number) {
       let message;

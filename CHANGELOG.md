@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.5.0
+- added shardkey property
+- update IConfig for Document Server v8.3
+- IConfig->document is not required
+- fix re-rendering of component after init editors
+- added props events_onRequestUsers
+
 ## 1.4.0
 - improved load api.js
 - bump dependencies
