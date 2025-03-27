@@ -42,6 +42,10 @@ export default defineComponent({
       type: String,
       required: true
     },
+    shardkey: {
+      type: [String, Boolean], 
+      default: true
+    },
     config: {
       type: Object as PropType<IConfig>,
       required: true
@@ -89,8 +93,16 @@ export default defineComponent({
     let url = this.documentServerUrl;
     if (!url!.endsWith("/")) url += "/";
 
-    const docApiUrl = `${url}web-apps/apps/api/documents/api.js`;
-    loadScript(docApiUrl, "onlyoffice-api-script")
+    let docsApiUrl = `${url}web-apps/apps/api/documents/api.js`;
+    if (this.shardkey) {
+      if (typeof this.shardkey === "boolean") {
+        docsApiUrl += `?shardkey=${this.config.document?.key}`;
+      } else {
+        docsApiUrl += `?shardkey=${this.shardkey}`;
+      }
+    }
+
+    loadScript(docsApiUrl, "onlyoffice-api-script")
       .then(() => this.onLoad())
       .catch(()=> {this.onError(-2)});
   },
