@@ -1,5 +1,8 @@
 # Change Log
 
+##
+- update IConfig for Document Server v9.0
+
 ## 1.5.0
 - added shardkey property
 - update IConfig for Document Server v8.3
