@@ -15,251 +15,251 @@
 */
 
 export interface IConfig {
-  documentType?: string;
-  height?: string;
-  token?: string;
-  type?: string;
-  width?: string;
+  documentType?: string,
+  height?: string,
+  token?: string,
+  type?: string,
+  width?: string,
   document?: {
-    fileType: string;
-    key: string;
+    fileType: string,
+    key: string,
     referenceData?: {
       fileKey: string,
       instanceId: string,
       key: string
     }
-    title: string;
-    url: string;
+    title: string,
+    url: string,
     info?: {
-      owner?: string;
-      uploaded?: string;
-      favorite?: boolean;
-      folder?: string;
-      sharingSettings?: any[];
-    };
+      owner?: string,
+      uploaded?: string,
+      favorite?: boolean,
+      folder?: string,
+      sharingSettings?: any[],
+    },
     permissions?: {
       /**
        * @deprecated Deprecated since version 5.5, please add the onRequestRestore field instead.
        */
-      changeHistory?: boolean;
-      chat?: boolean;
-      comment?: boolean;
-      commentGroups?: any;
-      copy?: boolean;
-      deleteCommentAuthorOnly?: boolean;
-      download?: boolean;
-      edit?: boolean;
-      editCommentAuthorOnly?: boolean;
-      fillForms?: boolean;
-      modifyContentControl?: boolean;
-      modifyFilter?: boolean;
-      print?: boolean;
-      protect?: boolean;
+      changeHistory?: boolean,
+      chat?: boolean,
+      comment?: boolean,
+      commentGroups?: any,
+      copy?: boolean,
+      deleteCommentAuthorOnly?: boolean,
+      download?: boolean,
+      edit?: boolean,
+      editCommentAuthorOnly?: boolean,
+      fillForms?: boolean,
+      modifyContentControl?: boolean,
+      modifyFilter?: boolean,
+      print?: boolean,
+      protect?: boolean,
       /**
        * @deprecated Deprecated since version 6.0, please add the onRequestRename field instead.
        */
-      rename?: boolean;
-      review?: boolean;
-      reviewGroups?: string[];
-      userInfoGroups?: string[];
-    };
-  };
+      rename?: boolean,
+      review?: boolean,
+      reviewGroups?: string[],
+      userInfoGroups?: string[],
+    },
+  },
   editorConfig?: {
-    actionLink?: any;
-    callbackUrl?: string;
+    actionLink?: any,
+    callbackUrl?: string,
     coEditing?: {
-      mode: string;
-      change: boolean;
-    };
-    createUrl?: string;
-    lang?: string;
+      mode: string,
+      change: boolean,
+    },
+    createUrl?: string,
+    lang?: string,
     /**
      * @deprecated Deprecated since version 8.2, please use the region parameter instead.
       */
-    location?: string;
-    mode?: string;
-    recent?: any[];
-    region?: string;
-    templates?: any[];
+    location?: string,
+    mode?: string,
+    recent?: any[],
+    region?: string,
+    templates?: any[],
     user?: {
       /**
        * @deprecated Deprecated since version 4.2, please use name instead.
        */
-      firstname?: string;
-      group?: string;
-      id?: string;
-      image?: string;
+      firstname?: string,
+      group?: string,
+      id?: string,
+      image?: string,
       /**
        * @deprecated Deprecated since version 4.2, please use name instead.
        */
-      lastname?: string;
-      name?: string;
-    };
+      lastname?: string,
+      name?: string,
+    },
     customization?: {
       anonymous?: {
-        request?: boolean;
-        label?: string;
-      };
-      autosave?: boolean;
+        request?: boolean,
+        label?: string,
+      },
+      autosave?: boolean,
       /**
        * @deprecated Deprecated since version 7.1, please use the document.permissions.chat parameter instead.
        */
-      chat?: boolean;
+      chat?: boolean,
       close: {
-        visible: boolean;
-        text: string;
+        visible: boolean,
+        text: string,
       }
       /**
        * @deprecated Deprecated since version 6.3, please use the document.permissions.editCommentAuthorOnly and document.permissions.deleteCommentAuthorOnly fields instead.
        */
-      commentAuthorOnly?: boolean;
-      comments?: boolean;
-      compactHeader?: boolean;
-      compactToolbar?: boolean;
-      compatibleFeatures?: boolean;
+      commentAuthorOnly?: boolean,
+      comments?: boolean,
+      compactHeader?: boolean,
+      compactToolbar?: boolean,
+      compatibleFeatures?: boolean,
       customer?: {
-        address?: string;
-        info?: string;
-        logo?: string;
-        logoDark?: string;
-        mail?: string;
-        name?: string;
-        phone?: string;
-        www?: string;
-      };
-      features?: any;
-      feedback?: any;
-      forcesave?: boolean;
-      forceWesternFontSize?: boolean;
-      goback?: any;
-      help?: boolean;
-      hideNotes?: boolean;
-      hideRightMenu?: boolean;
-      hideRulers?: boolean;
-      integrationMode?: string;
+        address?: string,
+        info?: string,
+        logo?: string,
+        logoDark?: string,
+        mail?: string,
+        name?: string,
+        phone?: string,
+        www?: string,
+      },
+      features?: any,
+      feedback?: any,
+      forcesave?: boolean,
+      forceWesternFontSize?: boolean,
+      goback?: any,
+      help?: boolean,
+      hideNotes?: boolean,
+      hideRightMenu?: boolean,
+      hideRulers?: boolean,
+      integrationMode?: string,
       logo?: {
-        image?: string;
-        imageDark?: string;
-        imageLight?: string;
-        imageEmbedded?: string;
-        url?: string;
-        visible?: boolean;
-      };
-      layout?: any;
-      macros?: boolean;
-      macrosMode?: string;
-      mentionShare?: boolean;
+        image?: string,
+        imageDark?: string,
+        imageLight?: string,
+        imageEmbedded?: string,
+        url?: string,
+        visible?: boolean,
+      },
+      layout?: any,
+      macros?: boolean,
+      macrosMode?: string,
+      mentionShare?: boolean,
       mobile?: {
-        forceView?: boolean;
-        info?: boolean;
-        standardView?: boolean;
-      };
+        forceView?: boolean,
+        info?: boolean,
+        standardView?: boolean,
+      },
       /**
        * @deprecated Starting from version 8.2, please use the mobile parameter instead.
        */
-      mobileForceView?: boolean;
-      plugins?: boolean;
-      pointerMode: 'select' | 'hand';
+      mobileForceView?: boolean,
+      plugins?: boolean,
+      pointerMode: 'select' | 'hand',
       review?: {
-        hideReviewDisplay?: boolean;
-        hoverMode?: boolean;
-        reviewDisplay?: string;
-        showReviewChanges?: boolean;
-        trackChanges?: boolean;
-      };
+        hideReviewDisplay?: boolean,
+        hoverMode?: boolean,
+        reviewDisplay?: string,
+        showReviewChanges?: boolean,
+        trackChanges?: boolean,
+      },
       /**
        * @deprecated Deprecated since version 7.0. Please use the review.reviewDisplay parameter instead.
        */
-      reviewDisplay?: string;
-      showHorizontalScroll?: boolean; 
+      reviewDisplay?: string,
+      showHorizontalScroll?: boolean, 
       /**
        * @deprecated Deprecated since version 7.0. Please use the review.showReviewChanges parameter instead.
        */
-      showReviewChanges?: boolean;
-      showVerticalScroll?: boolean;
-      slidePlayerBackground: string;
+      showReviewChanges?: boolean,
+      showVerticalScroll?: boolean,
+      slidePlayerBackground: string,
       /**
        * @deprecated Deprecated since version 7.1. Please use the features.spellcheck parameter instead.
        */
-      spellcheck?: boolean;
+      spellcheck?: boolean,
       submitForm?: {
         visible:  boolean,
         resultMessage: string,
-      } | boolean;
-      toolbarHideFileName?: boolean;
-      toolbarNoTabs?: boolean;
+      } | boolean,
+      toolbarHideFileName?: boolean,
+      toolbarNoTabs?: boolean,
       /**
        * @deprecated Deprecated since version 7.0. Please use the review.trackChanges parameter instead.
        */
-      trackChanges?: boolean;
-      uiTheme?: string;
-      unit?: string;
-      wordHeadingsColor?: string;
-      zoom?: number;
-    };
+      trackChanges?: boolean,
+      uiTheme?: string,
+      unit?: string,
+      wordHeadingsColor?: string,
+      zoom?: number,
+    },
     embedded?: {
-      embedUrl?: string;
-      fullscreenUrl?: string;
-      saveUrl?: string;
-      shareUrl?: string;
-      toolbarDocked?: string;
-    };
+      embedUrl?: string,
+      fullscreenUrl?: string,
+      saveUrl?: string,
+      shareUrl?: string,
+      toolbarDocked?: string,
+    },
     plugins?: {
-      autostart?: string[];
+      autostart?: string[],
       options?: {
-        all?: Object;
-        pluginGuid: Object;
-      };
-      pluginsData?: string[];
+        all?: Object,
+        pluginGuid: Object,
+      },
+      pluginsData?: string[],
       /**
        * @deprecated Deprecated since version 4.3, please use the absolute URLs in pluginsData field.
        */
-      url?: string;
-    };
-  };
+      url?: string,
+    },
+  },
   events?: {
-    onAppReady?: (event: object) => void;
-    onCollaborativeChanges?: (event: object) => void;
-    onDocumentReady?: (event: object) => void;
-    onDocumentStateChange?: (event: object) => void;
-    onDownloadAs?: (event: object) => void;
-    onError?: (event: object) => void;
-    onInfo?: (event: object) => void;
-    onMetaChange?: (event: object) => void;
-    onMakeActionLink?: (event: object) => void;
-    onOutdatedVersion?: (event: object) => void;
-    onPluginsReady?: (event: object) => void;
-    onReady?: (event: object) => void;
-    onRequestClose?: (event: object) => void;
+    onAppReady?: (event: object) => void,
+    onCollaborativeChanges?: (event: object) => void,
+    onDocumentReady?: (event: object) => void,
+    onDocumentStateChange?: (event: object) => void,
+    onDownloadAs?: (event: object) => void,
+    onError?: (event: object) => void,
+    onInfo?: (event: object) => void,
+    onMetaChange?: (event: object) => void,
+    onMakeActionLink?: (event: object) => void,
+    onOutdatedVersion?: (event: object) => void,
+    onPluginsReady?: (event: object) => void,
+    onReady?: (event: object) => void,
+    onRequestClose?: (event: object) => void,
     /**
      * @deprecated Deprecated since version 7.5, please use onRequestSelectDocument instead.
      */
-    onRequestCompareFile?: (event: object) => void;
-    onRequestCreateNew?: (event: object) => void;
-    onRequestEditRights?: (event: object) => void;
-    onRequestHistory?: (event: object) => void;
-    onRequestHistoryClose?: (event: object) => void;
-    onRequestHistoryData?: (event: object) => void;
-    onRequestInsertImage?: (event: object) => void;
+    onRequestCompareFile?: (event: object) => void,
+    onRequestCreateNew?: (event: object) => void,
+    onRequestEditRights?: (event: object) => void,
+    onRequestHistory?: (event: object) => void,
+    onRequestHistoryClose?: (event: object) => void,
+    onRequestHistoryData?: (event: object) => void,
+    onRequestInsertImage?: (event: object) => void,
     /**
      * @deprecated Deprecated since version 7.5, please use onRequestSelectSpreadsheet instead.
      */
-    onRequestMailMergeRecipients?: (event: object) => void;
-    onRequestOpen?: (event: object) => void;
-    onRequestReferenceData?: (event: object) => void;
-    onRequestReferenceSource?: (event: object) => void;
-    onRequestRefreshFile?: (event: object) => void;
-    onRequestRename?: (event: object) => void;
-    onRequestRestore?: (event: object) => void;
-    onRequestSaveAs?: (event: object) => void;
-    onRequestSelectDocument?: (event: object) => void;
-    onRequestSelectSpreadsheet?: (event: object) => void;
-    onRequestSendNotify?: (event: object) => void;
-    onRequestSharingSettings?: (event: object) => void;
-    onRequestStartFilling: (event: object) => void;
-    onRequestUsers?: (event: object) => void;
-    onSubmit?: (event: object) => void;
-    onUserActionRequired?: (event: object) => void;
-    onWarning?: (event: object) => void;
-  }
-};
+    onRequestMailMergeRecipients?: (event: object) => void,
+    onRequestOpen?: (event: object) => void,
+    onRequestReferenceData?: (event: object) => void,
+    onRequestReferenceSource?: (event: object) => void,
+    onRequestRefreshFile?: (event: object) => void,
+    onRequestRename?: (event: object) => void,
+    onRequestRestore?: (event: object) => void,
+    onRequestSaveAs?: (event: object) => void,
+    onRequestSelectDocument?: (event: object) => void,
+    onRequestSelectSpreadsheet?: (event: object) => void,
+    onRequestSendNotify?: (event: object) => void,
+    onRequestSharingSettings?: (event: object) => void,
+    onRequestStartFilling: (event: object) => void,
+    onRequestUsers?: (event: object) => void,
+    onSubmit?: (event: object) => void,
+    onUserActionRequired?: (event: object) => void,
+    onWarning?: (event: object) => void,
+  },
+}
