@@ -21,7 +21,6 @@ export default {
   title: 'DocumentEditor',
   component: DocumentEditor,
   tags: ["autodocs"],
-  decorators: [() => ({ template: '<div style="height: 600px;"><story/></div>' })],
   argTypes: {
     documentType: {
         options: ["word", "cell", "slide"],
@@ -70,22 +69,6 @@ const Template = (args) => ({
   template: '<DocumentEditor v-bind="args" />',
 });
 
-export const FormTemplate = Template.bind({});
-FormTemplate.storyName = "Form";
-FormTemplate.args = {
-    id: "pdfEditor",
-    documentServerUrl: config.documentServerUrl,
-    config: {
-        document: {
-            fileType: "pdf",
-            key: "pdf" + Math.random(),
-            title: "oform.pdf",
-            url: config.demoStorage + "oform.pdf",
-        },
-        documentType: "word",
-    },
-};
-
 export const DocumentTemplate = Template.bind({});
 DocumentTemplate.storyName = "Document";
 DocumentTemplate.args = {
@@ -131,5 +114,21 @@ PresentationTemplate.args = {
             url: config.demoStorage + "demo.pptx",
         },
         documentType: "slide",
+    },
+};
+
+export const FormTemplate = Template.bind({});
+FormTemplate.storyName = "Form";
+FormTemplate.args = {
+    id: "pdfEditor",
+    documentServerUrl: config.documentServerUrl,
+    config: {
+        document: {
+            fileType: "pdf",
+            key: "pdf" + Math.random(),
+            title: "oform.pdf",
+            url: config.demoStorage + "oform.pdf",
+        },
+        documentType: "word",
     },
 };

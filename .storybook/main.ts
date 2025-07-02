@@ -9,11 +9,7 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: "@storybook/vue3-webpack5",
-    options: {
-      builder: {
-        useSWC: true,
-      },
-    },
+    options: {},
   },
   docs: {
     autodocs: "tag",
