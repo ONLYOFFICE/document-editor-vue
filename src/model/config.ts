@@ -26,8 +26,8 @@ export interface IConfig {
     referenceData?: {
       fileKey: string,
       instanceId: string,
-      key: string
-    }
+      key: string,
+    },
     title: string,
     url: string,
     info?: {
@@ -75,7 +75,7 @@ export interface IConfig {
     lang?: string,
     /**
      * @deprecated Deprecated since version 8.2, please use the region parameter instead.
-      */
+     */
     location?: string,
     mode?: string,
     recent?: any[],
@@ -105,10 +105,10 @@ export interface IConfig {
        * @deprecated Deprecated since version 7.1, please use the document.permissions.chat parameter instead.
        */
       chat?: boolean,
-      close: {
+      close?: {
         visible: boolean,
         text: string,
-      }
+      },
       /**
        * @deprecated Deprecated since version 6.3, please use the document.permissions.editCommentAuthorOnly and document.permissions.deleteCommentAuthorOnly fields instead.
        */
@@ -137,6 +137,7 @@ export interface IConfig {
       hideRightMenu?: boolean,
       hideRulers?: boolean,
       integrationMode?: string,
+      layout?: any,
       logo?: {
         image?: string,
         imageDark?: string,
@@ -145,7 +146,6 @@ export interface IConfig {
         url?: string,
         visible?: boolean,
       },
-      layout?: any,
       macros?: boolean,
       macrosMode?: string,
       mentionShare?: boolean,
@@ -171,7 +171,7 @@ export interface IConfig {
        * @deprecated Deprecated since version 7.0. Please use the review.reviewDisplay parameter instead.
        */
       reviewDisplay?: string,
-      showHorizontalScroll?: boolean, 
+      showHorizontalScroll?: boolean,
       /**
        * @deprecated Deprecated since version 7.0. Please use the review.showReviewChanges parameter instead.
        */
@@ -183,7 +183,7 @@ export interface IConfig {
        */
       spellcheck?: boolean,
       submitForm?: {
-        visible:  boolean,
+        visible: boolean,
         resultMessage: string,
       } | boolean,
       toolbarHideFileName?: boolean,
@@ -237,6 +237,7 @@ export interface IConfig {
     onRequestCompareFile?: (event: object) => void,
     onRequestCreateNew?: (event: object) => void,
     onRequestEditRights?: (event: object) => void,
+    onRequestFillingStatus?: (event: object) => void,
     onRequestHistory?: (event: object) => void,
     onRequestHistoryClose?: (event: object) => void,
     onRequestHistoryData?: (event: object) => void,
@@ -256,8 +257,9 @@ export interface IConfig {
     onRequestSelectSpreadsheet?: (event: object) => void,
     onRequestSendNotify?: (event: object) => void,
     onRequestSharingSettings?: (event: object) => void,
-    onRequestStartFilling: (event: object) => void,
+    onRequestStartFilling?: (event: object) => void,
     onRequestUsers?: (event: object) => void,
+    onStartFilling?: (event: object) => void,
     onSubmit?: (event: object) => void,
     onUserActionRequired?: (event: object) => void,
     onWarning?: (event: object) => void,
