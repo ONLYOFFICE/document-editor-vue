@@ -36,7 +36,6 @@ npm install --save @onlyoffice/document-editor-vue
         id="docEditor" 
         documentServerUrl="http://documentserver/"
         :config="config"
-        :events_onDocumentReady="onDocumentReady"
         :onLoadComponentError="onLoadComponentError"
     /> 
 </template>
@@ -51,6 +50,10 @@ export default defineComponent({
         DocumentEditor
     },
     data() {
+        const onDocumentReady = () => {
+            console.log("Document is loaded");
+        };
+
         return {
             config: {
                 document: {
@@ -62,14 +65,14 @@ export default defineComponent({
                 documentType: "word",
                 editorConfig: {
                     callbackUrl: "https://example.com/url-to-callback.ashx"
+                },
+                events: {
+                    onDocumentReady: onDocumentReady
                 }
             }
         }
     },
     methods: {
-        onDocumentReady() {
-            console.log("Document is loaded");
-        },
         onLoadComponentError (errorCode, errorDescription) {
             switch(errorCode) {
                 case -1: // Unknown error loading component
@@ -156,36 +159,8 @@ The application will be deployed on the web server (*http://localhost:3000* by d
 | `id` | string | null | yes | Component unique identifier. |
 | `documentServerUrl` | string | null | yes | Address ONLYOFFICE Document Server. |
 | `shardkey` | string \| boolean | true | no | The string or boolean parameter required to request load balancing during collaborative editing: all users editing the same document are served by the same server. [Shard key](https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/#shard-key)|
-| `config` | object | null | yes | Generic configuration object for opening a file with token. [Config API](https://api.onlyoffice.com/editors/config/) |
+| `config` | object | null | yes | Generic configuration object for opening a file with token. [Config API](https://api.onlyoffice.com/docs/docs-api/usage-api/config/) |
 | `onLoadComponentError` | (errorCode: number, errorDescription: string) => void | null | no | The function called when an error occurs while loading a component |
-| `document_fileType` | string | null | no | The type of the file. |
-| `document_title` | string | null | no | The file name. |
-| `documentType` | string | null | no | The document type. |
-| `height` | string | null | no | Defines the document height in the browser window. |
-| `type` | string | null | no | Defines the platform type used to access the document (desktop, mobile or embedded). |
-| `width` | string | null | no | Defines the document width in the browser window. |
-| `events_onAppReady` | (event: object) => void | null | no | The function called when the application is loaded into the browser. |
-| `events_onDocumentStateChange` | (event: object) => void | null | no | The function called when the document is modified. |
-| `events_onMetaChange` | (event: object) => void | null | no | The function called when the meta information of the document is changed via the meta command. |
-| `events_onDocumentReady` | (event: object) => void | null | no | The function called when the document is loaded into the document editor. |
-| `events_onInfo` | (event: object) => void | null | no | The function called when the application opened the file. |
-| `events_onWarning`| (event: object) => void | null | no | The function called when a warning occurs. |
-| `events_onError` | (event: object) => void | null | no | The function called when an error or some other specific event occurs. |
-| `events_onRequestSharingSettings` | (event: object) => void | null | no | The function called when the user is trying to manage document access rights by clicking _Change access rights_ button. |
-| `events_onRequestRename` | (event: object) => void | null | no | The function called when the user is trying to rename the file by clicking the _Rename..._ button. |
-| `events_onMakeActionLink` | (event: object) => void | null | no | The function called when the user is trying to get link for opening the document which contains a bookmark, scrolling to the bookmark position. |
-| `events_onRequestInsertImage` | (event: object) => void | null | no | The function called when the user is trying to insert an image by clicking the _Image from Storage_ button. |
-| `events_onRequestSaveAs` | (event: object) => void | null | no | The function called when the user is trying to save file by clicking _Save Copy as..._ button. |
-| `events_onRequestMailMergeRecipients` [DEPRECATED] | (event: object) => void | null | no | the function called when the user is trying to select recipients data by clicking the _Mail merge_ button. |
-| `events_onRequestCompareFile` [DEPRECATED] | (event: object) => void | null | no | The function called when the user is trying to select document for comparing by clicking the _Document from Storage_ button. |
-| `events_onRequestEditRights` | (event: object) => void | null | no | The function called when the user is trying to switch the document from the viewing into the editing mode by clicking the _Edit Document_ button. |
-| `events_onRequestHistory` | (event: object) => void | null | no | The function called when the user is trying to show the document version history by clicking the _Version History_ button. |
-| `events_onRequestHistoryClose` | (event: object) => void | null | no | The function called when the user is trying to go back to the document from viewing the document version history by clicking the _Close History_ button. |
-| `events_onRequestHistoryData` | (event: object) => void | null | no | The function called when the user is trying to click the specific document version in the document version history. |
-| `events_onRequestRestore` | (event: object) => void | null | no | The function called when the user is trying to restore the file version by clicking the _Restore_ button in the version history. |
-| `events_onRequestSelectSpreadsheet` | (event: object) => void | null | no | The function called when the user is trying to select recipients data by clicking the Mail merge button. |
-| `events_onRequestSelectDocument` | (event: object) => void | null | no | The function called when the user is trying to select a document for comparing or combining. |
-| `events_onRequestUsers` | (event: object) => void | null | no | The function called when  the user can select other users to mention in the comments, grant the access rights to edit the specific sheet ranges, or set the user avatars. |
 
 ## Storybook
 
