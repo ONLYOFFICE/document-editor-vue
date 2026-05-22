@@ -22,11 +22,13 @@ npm create vue@3
 cd onlyoffice-vue-demo
 ```
 
-3. Install ONLYOFFICE Docs Vue.js component from **npm** and save it to the *package.json* file with *--save*:
+3. Install ONLYOFFICE Docs Vue.js component and the Document Editor API types from **npm** and save them to the *package.json* file with *--save*:
 
 ```
-npm install --save @onlyoffice/document-editor-vue
+npm install --save @onlyoffice/document-editor-vue @onlyoffice/doceditor-types
 ```
+
+The `@onlyoffice/doceditor-types` package version tracks the ONLYOFFICE Docs Server version, so you can install the version that matches your Document Server.
 
 4. Open the *./src/App.vue* file in the *onlyoffice-vue-demo* project and replace its contents with the following code:
 
@@ -159,7 +161,7 @@ The application will be deployed on the web server (*http://localhost:3000* by d
 | `id` | string | null | yes | Component unique identifier. |
 | `documentServerUrl` | string | null | yes | Address ONLYOFFICE Document Server. |
 | `shardkey` | string \| boolean | true | no | The string or boolean parameter required to request load balancing during collaborative editing: all users editing the same document are served by the same server. [Shard key](https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/#shard-key)|
-| `config` | object | null | yes | Generic configuration object for opening a file with token. [Config API](https://api.onlyoffice.com/docs/docs-api/usage-api/config/) |
+| `config` | Config | null | yes | Generic configuration object for opening a file with token. [Config API](https://api.onlyoffice.com/docs/docs-api/usage-api/config/) |
 | `onLoadComponentError` | (errorCode: number, errorDescription: string) => void | null | no | The function called when an error occurs while loading a component |
 
 ## Storybook

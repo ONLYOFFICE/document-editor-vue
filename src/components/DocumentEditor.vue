@@ -20,14 +20,18 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import type { Config, DocEditor } from "@onlyoffice/doceditor-types";
 import loadScript from "../utils/loadScript";
-import { IConfig } from "../model/config";
 import cloneDeep from "lodash/cloneDeep";
 
 declare global {
   interface Window {
-    DocsAPI?: any;
-    DocEditor?: any;
+    DocsAPI?: {
+      DocEditor: (id: string, config: Config) => DocEditor;
+    };
+    DocEditor?: {
+      instances: Record<string, DocEditor | undefined>;
+    };
   }
 }
 
@@ -47,7 +51,7 @@ export default defineComponent({
       default: true
     },
     config: {
-      type: Object as PropType<IConfig>,
+      type: Object as PropType<Config>,
       required: true
     },
     document_fileType: String,
@@ -134,7 +138,10 @@ export default defineComponent({
        try {
         const id = this.id || "";
 
-        if (!window.DocsAPI) this.onError(-3);
+        if (!window.DocsAPI) {
+          this.onError(-3);
+          return;
+        }
         if (window?.DocEditor?.instances[id]) {
           console.log("Skip loading. Instance already exists", id);
           return;
@@ -244,7 +251,7 @@ export default defineComponent({
     },
     onAppReady() {
       const id = this.id || "";
-      this.events_onAppReady!(window.DocEditor.instances[id]);
+      this.events_onAppReady!(window.DocEditor?.instances[id] || {});
     },
     onChangeProps () {
       const id = this.id || "";

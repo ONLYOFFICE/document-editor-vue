@@ -17,4 +17,3 @@
 import DocumentEditor from "./components/DocumentEditor.vue";
 
 export { DocumentEditor };
-export * from "./model/config";

@@ -28,6 +28,7 @@
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
+    "@onlyoffice/doceditor-types": ">=9.3.1",
     "vue": "^3.0.0"
   },
   "dependencies": {
@@ -37,6 +38,7 @@
     "@babel/core": "^7.26.10",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
+    "@onlyoffice/doceditor-types": "^9.3.1",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
