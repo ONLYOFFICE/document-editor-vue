@@ -1,0 +1,21 @@
+{
+  "name": "document-editor-vue-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Integration smoke tests that install the packed @onlyoffice/document-editor-vue tarball into a real Vue app and drive it with Playwright.",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "test": "node scripts/setup.mjs && playwright test"
+  },
+  "devDependencies": {
+    "@onlyoffice/doceditor-types": "^9.3.1",
+    "@playwright/test": "^1.62.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.8.2",
+    "vite": "^5.4.11",
+    "vue": "^3.5.13"
+  }
+}
