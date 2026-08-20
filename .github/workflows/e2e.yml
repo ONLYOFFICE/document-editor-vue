@@ -1,0 +1,44 @@
+name: E2E
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      package_version:
+        description: 'Version of @onlyoffice/document-editor-vue to install from npm (leave empty to build from source instead)'
+        required: false
+        type: string
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      E2E_LIB_VERSION: ${{ github.event.inputs.package_version }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install workspace dependencies
+        if: env.E2E_LIB_VERSION == ''
+        run: npm ci
+      - name: Install e2e dependencies
+        run: npm ci
+        working-directory: e2e
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: e2e
+      - name: Run e2e tests
+        run: npm run test
+        working-directory: e2e
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: e2e/playwright-report
+          retention-days: 7
