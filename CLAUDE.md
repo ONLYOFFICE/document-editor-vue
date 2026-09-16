@@ -52,7 +52,7 @@ Unit tests (`src/**/*.spec.ts`, jest + jsdom + `@vue/test-utils`; `e2e/` is igno
 
 The real coverage comes from e2e in `e2e/`, which is a **separate nested npm project** (its own `package.json`, `node_modules`, tsconfig), deliberately not a workspace. `e2e/scripts/setup.mjs` builds the library, runs `npm pack`, and installs the tarball into `e2e/node_modules`, so the tests exercise the published artifact rather than `src/`. Setting `E2E_LIB_VERSION` installs a version from npm instead of building locally (used by workflow_dispatch).
 
-No Document Server is started for e2e: `window.DocsAPI` is stubbed via `page.addInitScript`/`page.route`. `e2e/tests/fake-docs-api.ts` holds the shared URL pattern and the fake source (it swaps the placeholder for an iframe and records opened `document.key`s in `window.__e2eOpenedKeys__`); the harness app `e2e/src/App.vue` records events and errors into `window.__e2eEvents__` / `window.__e2eErrors__` and exposes a `toggle-editor` button so the specs can unmount and remount the editor.
+No Document Server is started for e2e: `window.DocsAPI` is stubbed via `page.addInitScript`/`page.route`. `e2e/tests/fake-docs-api.ts` holds the shared URL pattern and the fake source (it swaps the placeholder for an iframe and records opened `document.key`s in `window.__e2eOpenedKeys__`); the harness app `e2e/src/App.vue` records events and errors into `window.__e2eEvents__` / `window.__e2eErrors__` and exposes `toggle-editor` and `change-key` buttons so the specs can unmount, remount and change the config while `api.js` is still loading.
 
 After changing anything under `src/`, rerun e2e in full (`npm run test:e2e`) — otherwise Playwright picks up a stale tarball.
 

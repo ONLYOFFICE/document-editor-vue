@@ -2,11 +2,14 @@
   <button data-testid="toggle-editor" @click="mounted = !mounted">
     {{ mounted ? "unmount" : "mount" }}
   </button>
+  <button data-testid="change-key" @click="documentKey = changedDocumentKey">
+    change key
+  </button>
   <DocumentEditor
     v-if="mounted"
     id="e2e-editor"
     documentServerUrl="http://e2e-document-server.test/"
-    :config="config"
+    :config="{ ...config, document: { ...config.document, key: documentKey } }"
     :onLoadComponentError="onLoadComponentError"
   />
 </template>
@@ -41,7 +44,10 @@ const config: Config = {
   },
 };
 
+const changedDocumentKey = "e2e-changed-key";
+
 const mounted = ref(true);
+const documentKey = ref(config.document!.key!);
 
 function onLoadComponentError(errorCode: number, errorDescription: string) {
   (window.__e2eErrors__ ??= []).push({ errorCode, errorDescription });

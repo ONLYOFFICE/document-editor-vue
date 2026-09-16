@@ -187,6 +187,23 @@ describe("DocumentEditor", () => {
     expect(iframes()).toHaveLength(0);
     expect(leftovers()).toHaveLength(0);
   });
+
+  it("uses the current config when it changes while api.js is loading", async () => {
+    const loaded = holdApiScript();
+
+    const wrapper = mountEditor();
+
+    await wrapper.setProps({ config: withKey("aNewKey") });
+
+    loaded();
+    await flush();
+
+    expect(openedKeys).toEqual(["aNewKey"]);
+    expect(iframes()).toHaveLength(1);
+    expect(wrapper.element.querySelector("iframe[name='frameEditor']")).not.toBeNull();
+
+    wrapper.unmount();
+  });
 });
 
 const holdApiScript = () => {
