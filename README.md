@@ -168,6 +168,7 @@ The application will be deployed on the web server (*http://localhost:3000* by d
 
 * A `config` passed as an object literal is a new object on every render of the parent component. The editor is rebuilt only when the contents of `config` really change; handlers are treated as equal in that comparison, so passing a new function does not tear the editor down, exactly as the `events_*` props do not.
 * The component renders the editor placeholder inside a wrapper element. ONLYOFFICE Docs replaces the placeholder with its own iframe, so the wrapper is what keeps the component removable by Vue and reusable after unmounting. The wrapper is styled with `display: contents` and creates no box of its own, so the editor is laid out by the element you place the component in, and sizing it is unchanged.
+* Attributes you pass to `<DocumentEditor>` that are not props (`class`, `style`, `data-*`, `aria-*`) land on that wrapper, so they survive the moment Docs swaps the placeholder for its iframe and a selector such as `.your-class iframe` keeps working. The wrapper generates no box, so use the `height` and `width` props, or the element you place the component in, to size the editor: a height given in `class` or `style` applies to the wrapper and has no effect unless it also overrides `display`.
 
 ## Storybook
 
