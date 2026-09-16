@@ -95,6 +95,11 @@ export default defineComponent({
     events_onRequestSelectDocument: Function,
     events_onRequestUsers: Function,
   },
+  data() {
+    return {
+      cancelled: false
+    };
+  },
   mounted() {
     let url = this.documentServerUrl;
     if (!url!.endsWith("/")) url += "/";
@@ -109,11 +114,19 @@ export default defineComponent({
     }
 
     loadScript(docsApiUrl, "onlyoffice-api-script")
-      .then(() => this.onLoad())
-      .catch(()=> {this.onError(-2)});
+      .then(() => {
+        if (this.cancelled) return;
+        this.onLoad();
+      })
+      .catch(()=> {
+        if (this.cancelled) return;
+        this.onError(-2);
+      });
   },
   beforeUnmount() {
     const id = this.id || "";
+
+    this.cancelled = true;
 
     if (window?.DocEditor?.instances[id]) {
       window.DocEditor.instances[id].destroyEditor();

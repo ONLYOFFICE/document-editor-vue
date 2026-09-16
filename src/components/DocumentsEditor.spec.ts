@@ -169,4 +169,43 @@ describe("DocumentEditor", () => {
 
     wrapper.unmount();
   });
+
+  it("creates no editor when unmounted while api.js is loading", async () => {
+    const onLoadComponentError = jest.fn();
+    const loaded = holdApiScript();
+
+    const wrapper = mountEditor({ onLoadComponentError });
+
+    wrapper.unmount();
+
+    loaded();
+    await flush();
+
+    expect(openedKeys).toEqual([]);
+    expect(editor()).toBeUndefined();
+    expect(onLoadComponentError).not.toHaveBeenCalled();
+    expect(iframes()).toHaveLength(0);
+    expect(leftovers()).toHaveLength(0);
+  });
 });
+
+const holdApiScript = () => {
+  const docsAPI = window.DocsAPI;
+  window.DocsAPI = undefined;
+
+  let load = () => {};
+  const appendChild = document.body.appendChild.bind(document.body);
+
+  jest.spyOn(document.body, "appendChild").mockImplementation(((node: any) => {
+    if (node.id !== "onlyoffice-api-script") return appendChild(node);
+
+    load = () => {
+      window.DocsAPI = docsAPI;
+      node.onload();
+    };
+
+    return node;
+  }) as any);
+
+  return () => load();
+};

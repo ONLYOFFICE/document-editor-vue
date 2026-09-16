@@ -4,6 +4,7 @@
 - fix the editor not being reusable after unmounting the component, for example on a soft navigation
 - the editor placeholder is now rendered inside a wrapper element, which is kept out of layout with display: contents
 - the editor is destroyed before the component leaves the DOM, so it is torn down while it is still in the document
+- fix an editor being left behind when the component is unmounted while api.js is still loading
 
 ## 1.6.1
 - fix IConfig (fields pointerMode and slidePlayerBackground is not required)
