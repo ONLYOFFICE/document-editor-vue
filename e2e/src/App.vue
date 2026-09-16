@@ -1,5 +1,9 @@
 <template>
+  <button data-testid="toggle-editor" @click="mounted = !mounted">
+    {{ mounted ? "unmount" : "mount" }}
+  </button>
   <DocumentEditor
+    v-if="mounted"
     id="e2e-editor"
     documentServerUrl="http://e2e-document-server.test/"
     :config="config"
@@ -8,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { DocumentEditor } from "@onlyoffice/document-editor-vue";
 import type { Config } from "@onlyoffice/doceditor-types";
 
@@ -35,6 +40,8 @@ const config: Config = {
     },
   },
 };
+
+const mounted = ref(true);
 
 function onLoadComponentError(errorCode: number, errorDescription: string) {
   (window.__e2eErrors__ ??= []).push({ errorCode, errorDescription });

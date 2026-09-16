@@ -164,6 +164,10 @@ The application will be deployed on the web server (*http://localhost:3000* by d
 | `config` | Config | null | yes | Generic configuration object for opening a file with token. [Config API](https://api.onlyoffice.com/docs/docs-api/usage-api/config/) |
 | `onLoadComponentError` | (errorCode: number, errorDescription: string) => void | null | no | The function called when an error occurs while loading a component |
 
+### Notes
+
+* The component renders the editor placeholder inside a wrapper element. ONLYOFFICE Docs replaces the placeholder with its own iframe, so the wrapper is what keeps the component removable by Vue and reusable after unmounting. The wrapper is styled with `display: contents` and creates no box of its own, so the editor is laid out by the element you place the component in, and sizing it is unchanged.
+
 ## Storybook
 
 Change the address of the Document Server in the *config/default.json* file:

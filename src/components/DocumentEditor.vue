@@ -15,7 +15,9 @@
 */
 
 <template>
-  <div :id="id"></div>
+  <div style="display: contents">
+    <div :id="id"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -110,7 +112,7 @@ export default defineComponent({
       .then(() => this.onLoad())
       .catch(()=> {this.onError(-2)});
   },
-  unmounted() {
+  beforeUnmount() {
     const id = this.id || "";
 
     if (window?.DocEditor?.instances[id]) {
