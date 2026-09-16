@@ -21,10 +21,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, markRaw, PropType } from 'vue';
 import type { Config, DocEditor } from "@onlyoffice/doceditor-types";
 import loadScript from "../utils/loadScript";
 import cloneDeep from "lodash/cloneDeep";
+import isEqualWith from "lodash/isEqualWith";
+
+const isSameConfig = (config: Config | null, other: Config | null) =>
+  isEqualWith(config, other, (value: unknown, otherValue: unknown) =>
+    typeof value === "function" && typeof otherValue === "function" ? true : undefined
+  );
 
 declare global {
   interface Window {
@@ -97,7 +103,8 @@ export default defineComponent({
   },
   data() {
     return {
-      cancelled: false
+      cancelled: false,
+      lastConfig: null as Config | null
     };
   },
   mounted() {
@@ -136,6 +143,8 @@ export default defineComponent({
   watch: {
     config: {
       handler: function (newVal, oldVal) {
+        if (isSameConfig(this.config, this.lastConfig)) return;
+
         this.onChangeProps()     
       },
       deep: true
@@ -167,6 +176,8 @@ export default defineComponent({
         }
 
         var cloneConfig = cloneDeep(this.config);
+
+        this.lastConfig = markRaw(cloneDeep(this.config));
 
         var propsConfig: any = {
           documentType: this.documentType,

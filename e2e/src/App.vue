@@ -5,6 +5,7 @@
   <button data-testid="change-key" @click="documentKey = changedDocumentKey">
     change key
   </button>
+  <button data-testid="rerender" @click="renders++">rerender {{ renders }}</button>
   <DocumentEditor
     v-if="mounted"
     id="e2e-editor"
@@ -48,6 +49,7 @@ const changedDocumentKey = "e2e-changed-key";
 
 const mounted = ref(true);
 const documentKey = ref(config.document!.key!);
+const renders = ref(0);
 
 function onLoadComponentError(errorCode: number, errorDescription: string) {
   (window.__e2eErrors__ ??= []).push({ errorCode, errorDescription });

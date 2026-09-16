@@ -40,6 +40,8 @@ Storybook requires editing `config/default.json` — it holds the address of a r
 
 **Editor reload.** A deep watcher on `config` plus one watcher per "important" flat prop calls `onChangeProps()`, which destroys the current instance and recreates it from scratch. Event props (`events_*`) are deliberately not watched — changing them must not tear down the editor.
 
+The `config` watcher fires on a new object as well as on a mutation, and a caller that passes `:config="{ ... }"` hands over a new object on every render, so the watcher first compares the prop against `lastConfig` — the copy `onLoad()` took of the config the current editor was built from (a copy of its own: the one given to DocsAPI is mutated by it). Functions compare equal there (`isSameConfig`), which keeps handlers recreated alongside the literal in line with the `events_*` rule above. A deep mutation reports the same object as both `newVal` and `oldVal`, which is why the watcher arguments are useless here.
+
 **`src/utils/loadScript.ts`** solves the race that appears with several components on one page: the script tag is marked with a `loading` attribute, and concurrent calls poll it every 500ms instead of injecting a second tag. If `window.DocsAPI` still isn't there after load, the stale tag is removed and the attempt is retried.
 
 **Error codes** (`onError` → the `onLoadComponentError` callback): `-1` unknown error, `-2` the DocsAPI script failed to load, `-3` `window.DocsAPI` undefined after load. These codes are documented in README and covered by e2e — do not change them.
@@ -52,7 +54,7 @@ Unit tests (`src/**/*.spec.ts`, jest + jsdom + `@vue/test-utils`; `e2e/` is igno
 
 The real coverage comes from e2e in `e2e/`, which is a **separate nested npm project** (its own `package.json`, `node_modules`, tsconfig), deliberately not a workspace. `e2e/scripts/setup.mjs` builds the library, runs `npm pack`, and installs the tarball into `e2e/node_modules`, so the tests exercise the published artifact rather than `src/`. Setting `E2E_LIB_VERSION` installs a version from npm instead of building locally (used by workflow_dispatch).
 
-No Document Server is started for e2e: `window.DocsAPI` is stubbed via `page.addInitScript`/`page.route`. `e2e/tests/fake-docs-api.ts` holds the shared URL pattern and the fake source (it swaps the placeholder for an iframe and records opened `document.key`s in `window.__e2eOpenedKeys__`); the harness app `e2e/src/App.vue` records events and errors into `window.__e2eEvents__` / `window.__e2eErrors__` and exposes `toggle-editor` and `change-key` buttons so the specs can unmount, remount and change the config while `api.js` is still loading.
+No Document Server is started for e2e: `window.DocsAPI` is stubbed via `page.addInitScript`/`page.route`. `e2e/tests/fake-docs-api.ts` holds the shared URL pattern and the fake source (it swaps the placeholder for an iframe and records opened `document.key`s in `window.__e2eOpenedKeys__`); the harness app `e2e/src/App.vue` records events and errors into `window.__e2eEvents__` / `window.__e2eErrors__` and exposes `toggle-editor`, `change-key` and `rerender` buttons so the specs can unmount, remount, change the config while `api.js` is still loading, and re-render the parent with an equal one.
 
 After changing anything under `src/`, rerun e2e in full (`npm run test:e2e`) — otherwise Playwright picks up a stale tarball.
 

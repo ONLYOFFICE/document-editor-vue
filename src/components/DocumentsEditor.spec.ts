@@ -43,6 +43,11 @@ const withKey = (key: string): Config => ({
   document: { ...config.document!, key },
 });
 
+const equalConfig = (): Config => ({
+  ...withKey("Khirz6zTPdfd7"),
+  events: { onDocumentReady: () => {} },
+});
+
 let openedKeys: string[];
 let attachedOnDestroy: boolean[];
 
@@ -166,6 +171,22 @@ describe("DocumentEditor", () => {
     expect(openedKeys).toEqual(["Khirz6zTPdfd7", "aNewKey"]);
     expect(iframes()).toHaveLength(1);
     expect(wrapper.element.querySelector("iframe[name='frameEditor']")).not.toBeNull();
+
+    wrapper.unmount();
+  });
+
+  it("keeps the editor when the config is replaced with an equal one", async () => {
+    const wrapper = mountEditor({ config: equalConfig() });
+    await flush();
+
+    const first = editor();
+
+    await wrapper.setProps({ config: equalConfig() });
+    await flush();
+
+    expect(editor()).toBe(first);
+    expect(openedKeys).toEqual(["Khirz6zTPdfd7"]);
+    expect(iframes()).toHaveLength(1);
 
     wrapper.unmount();
   });
