@@ -1,5 +1,8 @@
 # Change Log
 
+## [Unreleased]
+- added DocumentEditorPreload component for caching the editor static assets before a document is opened (ONLYOFFICE Docs 9.0 and later)
+
 ## 1.6.1
 - fix IConfig (fields pointerMode and slidePlayerBackground is not required)
 
