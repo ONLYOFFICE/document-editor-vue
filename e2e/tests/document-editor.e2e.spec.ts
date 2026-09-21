@@ -1,19 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const API_SCRIPT_PATTERN = "**/web-apps/apps/api/documents/api.js**";
-
-const fakeDocsApiSource = `
-  window.DocsAPI = {
-    DocEditor: function (id, config) {
-      setTimeout(function () {
-        if (config.events && config.events.onAppReady) {
-          config.events.onAppReady();
-        }
-      }, 0);
-      return { destroyEditor: function () {} };
-    }
-  };
-`;
+import { API_SCRIPT_PATTERN, fakeDocsApiSource } from "./fake-docs-api";
 
 test("initializes the editor when window.DocsAPI is already present", async ({ page }) => {
   await page.addInitScript(fakeDocsApiSource);

@@ -15,14 +15,22 @@
 */
 
 <template>
-  <div :id="id"></div>
+  <div style="display: contents">
+    <div :id="id"></div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, markRaw, PropType } from 'vue';
 import type { Config, DocEditor } from "@onlyoffice/doceditor-types";
 import loadScript from "../utils/loadScript";
 import cloneDeep from "lodash/cloneDeep";
+import isEqualWith from "lodash/isEqualWith";
+
+const isSameConfig = (config: Config | null, other: Config | null) =>
+  isEqualWith(config, other, (value: unknown, otherValue: unknown) =>
+    typeof value === "function" && typeof otherValue === "function" ? true : undefined
+  );
 
 declare global {
   interface Window {
@@ -174,6 +182,12 @@ export default defineComponent({
      */
     events_onRequestUsers: Function,
   },
+  data() {
+    return {
+      cancelled: false,
+      lastConfig: null as Config | null
+    };
+  },
   mounted() {
     let url = this.documentServerUrl;
     if (!url!.endsWith("/")) url += "/";
@@ -188,11 +202,19 @@ export default defineComponent({
     }
 
     loadScript(docsApiUrl, "onlyoffice-api-script")
-      .then(() => this.onLoad())
-      .catch(()=> {this.onError(-2)});
+      .then(() => {
+        if (this.cancelled) return;
+        this.onLoad();
+      })
+      .catch(()=> {
+        if (this.cancelled) return;
+        this.onError(-2);
+      });
   },
-  unmounted() {
+  beforeUnmount() {
     const id = this.id || "";
+
+    this.cancelled = true;
 
     if (window?.DocEditor?.instances[id]) {
       window.DocEditor.instances[id].destroyEditor();
@@ -202,6 +224,8 @@ export default defineComponent({
   watch: {
     config: {
       handler: function (newVal, oldVal) {
+        if (isSameConfig(this.config, this.lastConfig)) return;
+
         this.onChangeProps()     
       },
       deep: true
@@ -233,6 +257,8 @@ export default defineComponent({
         }
 
         var cloneConfig = cloneDeep(this.config);
+
+        this.lastConfig = markRaw(cloneDeep(this.config));
 
         var propsConfig: any = {
           documentType: this.documentType,
