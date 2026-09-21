@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-`@onlyoffice/document-editor-vue` is a published npm library exposing a single Vue 3 component, `DocumentEditor`, that embeds ONLYOFFICE Document Server into user applications. The entire public API surface is the component's props (see the table in README.md); the editor itself is rendered by the third-party Document Server script, not by this code.
+`@onlyoffice/document-editor-vue` is a published npm library built around Vue 3 components that embed ONLYOFFICE Document Server into user applications. `src/index.ts` exports two of them: `DocumentEditor` (`src/components/DocumentEditor.vue`) opens a document, `DocumentEditorPreload` (`src/components/DocumentEditorPreload.vue`) only warms the browser cache. The entire public API surface is their props (see the tables in README.md); the editor itself is rendered by the third-party Document Server script, not by this code.
 
 ## Commands
 
@@ -28,7 +28,7 @@ Storybook requires editing `config/default.json` — it holds the address of a r
 
 ## Architecture
 
-**`src/components/DocumentEditor.vue`** is the only component. Lifecycle:
+**`src/components/DocumentEditor.vue`** is the component that opens a document. Lifecycle:
 
 1. `mounted()` builds the URL `{documentServerUrl}/web-apps/apps/api/documents/api.js` and appends a `shardkey` query parameter (when the `shardkey` prop is `true`, the key comes from `config.document.key`; a string is used as-is; `false` disables it).
 2. `loadScript` loads the script, then `onLoad()` calls `window.DocsAPI.DocEditor(id, initConfig)`. The load can settle long after mount, so `onLoad()`/`onError()` are skipped when the `cancelled` flag is set — otherwise an unmount during the load leaves an editor behind that nobody destroys, and the leftover registry entry makes the next mount skip loading altogether.
@@ -36,7 +36,7 @@ Storybook requires editing `config/default.json` — it holds the address of a r
 
 **DOM ownership.** The template is `<div style="display: contents"><div :id="id"></div></div>`. DocsAPI *replaces* the `#id` placeholder with its own iframe, so the placeholder Vue rendered is no longer in the document while Vue still references it — on unmount Vue would remove nothing and leave the editor node behind, and the next mount would find two elements with the same `id`. The wrapper is the node Vue owns and removes, taking the iframe with it; `display: contents` keeps it out of layout so sizing still comes from the parent. Do not flatten it back to a single `<div :id="id">`, and keep comments out of the template — a comment node there turns the component into a multi-root fragment.
 
-**Config merging.** The component accepts configuration through two paths: the `config` object (primary) and flat props (`document_fileType`, `documentType`, `editorConfig_lang`, `height`, `width`, `type`, `events_on*`). In `onLoad()` the flat props are collected into `propsConfig`, then `cloneDeep(this.config)` is layered on top via `Object.assign` — **`config` always wins** and wholesale overwrites the nested `document`/`editorConfig`/`events` branches set by flat props. `cloneDeep` is mandatory: Document Server mutates the config it is handed, and without a copy a reactive Vue object would trigger infinite re-renders.
+**Config merging.** The component accepts configuration through two paths: the `config` object (primary) and flat props (`document_fileType`, `documentType`, `editorConfig_lang`, `height`, `width`, `type`, `events_on*`). In `onLoad()` the flat props are collected into `propsConfig`, then `cloneDeep(this.config)` is layered on top via `Object.assign` — **`config` always wins** and wholesale overwrites the nested `document`/`editorConfig`/`events` branches set by flat props. `cloneDeep` is mandatory: Document Server mutates the config it is handed, and without a copy a reactive Vue object would trigger infinite re-renders. Every flat prop is marked `@deprecated` in the `props` block (the supported API is `id`, `documentServerUrl`, `shardkey`, `config`, `onLoadComponentError`) — they are still read and merged, the tags are documentation only and travel to callers through the emitted `.d.ts`.
 
 **Editor reload.** A deep watcher on `config` plus one watcher per "important" flat prop calls `onChangeProps()`, which destroys the current instance and recreates it from scratch. Event props (`events_*`) are deliberately not watched — changing them must not tear down the editor.
 
@@ -46,11 +46,13 @@ The `config` watcher fires on a new object as well as on a mutation, and a calle
 
 **Error codes** (`onError` → the `onLoadComponentError` callback): `-1` unknown error, `-2` the DocsAPI script failed to load, `-3` `window.DocsAPI` undefined after load. These codes are documented in README and covered by e2e — do not change them.
 
+**`src/components/DocumentEditorPreload.vue`** shares nothing with the editor component: no lifecycle hook, no `loadScript`, no instance registry. It renders a hidden `<iframe>` pointing at `${documentServerUrl}web-apps/apps/api/documents/preload.html` (adding the trailing slash when the url lacks one) and nothing else. The preload page exists since ONLYOFFICE Docs 9.0; older servers answer it with a 404, which is harmless. Keep the component free of `DocsAPI` knowledge — mounting it next to `DocumentEditor` is pointless, it is meant for pages shown *before* the editor.
+
 **Types.** `Config`/`DocEditor` come from the `@onlyoffice/doceditor-types` peer dependency, whose version tracks the Document Server version. This repository defines no config types of its own.
 
 ## Testing
 
-Unit tests (`src/**/*.spec.ts`, jest + jsdom + `@vue/test-utils`; `e2e/` is ignored by `jest.config.js` and excluded from `tsconfig.json`) stub `window.DocsAPI` with a fake `DocEditor` that replaces the placeholder with an iframe and restores it on `destroyEditor()`, mirroring what Docs does to the DOM — that is what makes the mount/unmount/remount cases testable in jsdom. There is no real Document Server there; broader behaviour is still covered by e2e.
+Unit tests (`src/**/*.spec.ts`, jest + jsdom + `@vue/test-utils`; `e2e/` is ignored by `jest.config.js` and excluded from `tsconfig.json`) stub `window.DocsAPI` with a fake `DocEditor` that replaces the placeholder with an iframe and restores it on `destroyEditor()`, mirroring what Docs does to the DOM — that is what makes the mount/unmount/remount cases testable in jsdom. There is no real Document Server there; broader behaviour is still covered by e2e. `DocumentEditorPreload` is the exception: `src/components/DocumentEditorPreload.spec.ts` is its only coverage, it has neither an e2e test nor a story.
 
 The real coverage comes from e2e in `e2e/`, which is a **separate nested npm project** (its own `package.json`, `node_modules`, tsconfig), deliberately not a workspace. `e2e/scripts/setup.mjs` builds the library, runs `npm pack`, and installs the tarball into `e2e/node_modules`, so the tests exercise the published artifact rather than `src/`. Setting `E2E_LIB_VERSION` installs a version from npm instead of building locally (used by workflow_dispatch).
 
@@ -64,3 +66,4 @@ After changing anything under `src/`, rerun e2e in full (`npm run test:e2e`) —
 - Every file in `src/` starts with the Apache-2.0 header "(c) Copyright Ascensio System SIA <year>".
 - Releases are driven by CHANGELOG.md: a push to `master` makes the workflow read the **first** version from CHANGELOG and create a `v*` tag, and that tag triggers `npm publish`. The version must be bumped in `package.json` and given a CHANGELOG.md section in lockstep, or the release goes out wrong.
 - `develop` is the development branch and PRs target it; `master` is the release branch.
+- README.md holds one props table per component (`DocumentEditor` under "API", `DocumentEditorPreload` under "Preloading the editor") — these tables are the public API doc, update the right one when adding or changing a prop.

@@ -170,6 +170,35 @@ The application will be deployed on the web server (*http://localhost:3000* by d
 * The component renders the editor placeholder inside a wrapper element. ONLYOFFICE Docs replaces the placeholder with its own iframe, so the wrapper is what keeps the component removable by Vue and reusable after unmounting. The wrapper is styled with `display: contents` and creates no box of its own, so the editor is laid out by the element you place the component in, and sizing it is unchanged.
 * Attributes you pass to `<DocumentEditor>` that are not props (`class`, `style`, `data-*`, `aria-*`) land on that wrapper, so they survive the moment Docs swaps the placeholder for its iframe and a selector such as `.your-class iframe` keeps working. The wrapper generates no box, so use the `height` and `width` props, or the element you place the component in, to size the editor: a height given in `class` or `style` applies to the wrapper and has no effect unless it also overrides `display`.
 
+## Preloading the editor
+
+Starting from ONLYOFFICE Docs 9.0, the editor static assets (HTML, CSS, JS, fonts) can be cached before a document is opened, which makes the first opening faster. [Preload](https://api.onlyoffice.com/docs/docs-api/get-started/configuration/preload/)
+
+Place the `DocumentEditorPreload` component on a page where the editor itself is not shown yet: a file list, a login screen, an application layout.
+
+```
+<template>
+    <DocumentEditorPreload documentServerUrl="http://documentserver/" />
+    <RouterView />
+</template>
+
+<script setup>
+import { DocumentEditorPreload } from "@onlyoffice/document-editor-vue";
+</script>
+```
+
+The component renders a hidden iframe with the preload page of ONLYOFFICE Docs and does nothing else. Rendering it next to `DocumentEditor` brings no benefit, because `DocumentEditor` requests the same assets as soon as it is mounted.
+
+### Props
+| Name | Type | Default | Required | Description |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| `documentServerUrl` | string | null | yes | Address of ONLYOFFICE Document Server. |
+
+**Please note**:
+* the preload page appeared in ONLYOFFICE Docs 9.0, earlier versions answer the request for it with the 404 error: it breaks nothing, but is visible in the browser network log;
+* one component per application is enough;
+* do not replace it with `<link rel="prefetch">`: the editor assets are loaded within the iframe context, so prefetch will not cache them.
+
 ## Storybook
 
 Change the address of the Document Server in the *config/default.json* file:

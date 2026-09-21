@@ -62,43 +62,124 @@ export default defineComponent({
       type: Object as PropType<Config>,
       required: true
     },
+    /**
+     * @deprecated Use `config.document.fileType` instead.
+     */
     document_fileType: String,
+    /**
+     * @deprecated Use `config.document.title` instead.
+     */
     document_title: String,
+    /**
+     * @deprecated Use `config.documentType` instead.
+     */
     documentType: String,
+    /**
+     * @deprecated Use `config.editorConfig.lang` instead.
+     */
     editorConfig_lang: String,
+    /**
+     * @deprecated Use `config.height` instead.
+     */
     height: String,
+    /**
+     * @deprecated Use `config.type` instead.
+     */
     type: String,
+    /**
+     * @deprecated Use `config.width` instead.
+     */
     width: String,
 
     onLoadComponentError: Function,
 
+    /**
+     * @deprecated Use `config.events.onAppReady` instead.
+     */
     events_onAppReady: Function,
+    /**
+     * @deprecated Use `config.events.onDocumentStateChange` instead.
+     */
     events_onDocumentStateChange: Function,
+    /**
+     * @deprecated Use `config.events.onMetaChange` instead.
+     */
     events_onMetaChange: Function,
+    /**
+     * @deprecated Use `config.events.onDocumentReady` instead.
+     */
     events_onDocumentReady: Function,
+    /**
+     * @deprecated Use `config.events.onInfo` instead.
+     */
     events_onInfo: Function,
+    /**
+     * @deprecated Use `config.events.onWarning` instead.
+     */
     events_onWarning: Function,
+    /**
+     * @deprecated Use `config.events.onError` instead.
+     */
     events_onError: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSharingSettings` instead.
+     */
     events_onRequestSharingSettings: Function,
+    /**
+     * @deprecated Use `config.events.onRequestRename` instead.
+     */
     events_onRequestRename: Function,
+    /**
+     * @deprecated Use `config.events.onMakeActionLink` instead.
+     */
     events_onMakeActionLink: Function,
+    /**
+     * @deprecated Use `config.events.onRequestInsertImage` instead.
+     */
     events_onRequestInsertImage: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSaveAs` instead.
+     */
     events_onRequestSaveAs: Function,
     /**
-     * @deprecated Deprecated since version 7.5, please use events_onRequestSelectSpreadsheet instead.
+     * @deprecated Deprecated since version 7.5, please use `config.events.onRequestSelectSpreadsheet` instead.
      */
     events_onRequestMailMergeRecipients: Function,
     /**
-     * @deprecated Deprecated since version 7.5, please use events_onRequestSelectDocument instead.
+     * @deprecated Deprecated since version 7.5, please use `config.events.onRequestSelectDocument` instead.
      */
     events_onRequestCompareFile: Function,
+    /**
+     * @deprecated Use `config.events.onRequestEditRights` instead.
+     */
     events_onRequestEditRights: Function,
+    /**
+     * @deprecated Use `config.events.onRequestHistory` instead.
+     */
     events_onRequestHistory: Function,
+    /**
+     * @deprecated Use `config.events.onRequestHistoryClose` instead.
+     */
     events_onRequestHistoryClose: Function,
+    /**
+     * @deprecated Use `config.events.onRequestHistoryData` instead.
+     */
     events_onRequestHistoryData: Function,
+    /**
+     * @deprecated Use `config.events.onRequestRestore` instead.
+     */
     events_onRequestRestore: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSelectSpreadsheet` instead.
+     */
     events_onRequestSelectSpreadsheet: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSelectDocument` instead.
+     */
     events_onRequestSelectDocument: Function,
+    /**
+     * @deprecated Use `config.events.onRequestUsers` instead.
+     */
     events_onRequestUsers: Function,
   },
   data() {

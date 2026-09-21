@@ -14,7 +14,34 @@
 * limitations under the License.
 */
 
-import DocumentEditor from "./components/DocumentEditor.vue";
-import DocumentEditorPreload from "./components/DocumentEditorPreload.vue";
+<template>
+  <iframe
+    :src="preloadUrl"
+    title="onlyoffice-preload"
+    tabindex="-1"
+    aria-hidden="true"
+    style="display: none"
+  ></iframe>
+</template>
 
-export { DocumentEditor, DocumentEditorPreload };
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'DocumentEditorPreload',
+  props: {
+    documentServerUrl: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    preloadUrl(): string {
+      let url = this.documentServerUrl;
+      if (!url.endsWith("/")) url += "/";
+
+      return `${url}web-apps/apps/api/documents/preload.html`;
+    }
+  }
+});
+</script>
