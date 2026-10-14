@@ -3,7 +3,6 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
 import vue from "rollup-plugin-vue";
-import postcss from "rollup-plugin-postcss";
 
 const packageJson = require("./package.json");
 
@@ -25,10 +24,9 @@ export default [
     plugins: [
       peerDepsExternal(),
       resolve(),
-      typescript({ tsconfig: "./tsconfig.json" }),
+      typescript({ tsconfig: "./tsconfig.json", include: ["*.ts", "**/*.ts", "*.tsx", "**/*.tsx"] }),
       vue(),
-      commonjs(),
-      postcss()
+      commonjs()
     ]
   }
 ]
