@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2025
+* (c) Copyright Ascensio System SIA 2026
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,19 +15,31 @@
 */
 
 <template>
-  <div :id="id"></div>
+  <div style="display: contents">
+    <div :id="id"></div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, markRaw, PropType } from 'vue';
+import type { Config, DocEditor } from "@onlyoffice/doceditor-types";
 import loadScript from "../utils/loadScript";
-import { IConfig } from "../model/config";
 import cloneDeep from "lodash/cloneDeep";
+import isEqualWith from "lodash/isEqualWith";
+
+const isSameConfig = (config: Config | null, other: Config | null) =>
+  isEqualWith(config, other, (value: unknown, otherValue: unknown) =>
+    typeof value === "function" && typeof otherValue === "function" ? true : undefined
+  );
 
 declare global {
   interface Window {
-    DocsAPI?: any;
-    DocEditor?: any;
+    DocsAPI?: {
+      DocEditor: (id: string, config: Config) => DocEditor;
+    };
+    DocEditor?: {
+      instances: Record<string, DocEditor | undefined>;
+    };
   }
 }
 
@@ -47,47 +59,134 @@ export default defineComponent({
       default: true
     },
     config: {
-      type: Object as PropType<IConfig>,
+      type: Object as PropType<Config>,
       required: true
     },
+    /**
+     * @deprecated Use `config.document.fileType` instead.
+     */
     document_fileType: String,
+    /**
+     * @deprecated Use `config.document.title` instead.
+     */
     document_title: String,
+    /**
+     * @deprecated Use `config.documentType` instead.
+     */
     documentType: String,
+    /**
+     * @deprecated Use `config.editorConfig.lang` instead.
+     */
     editorConfig_lang: String,
+    /**
+     * @deprecated Use `config.height` instead.
+     */
     height: String,
+    /**
+     * @deprecated Use `config.type` instead.
+     */
     type: String,
+    /**
+     * @deprecated Use `config.width` instead.
+     */
     width: String,
 
     onLoadComponentError: Function,
 
+    /**
+     * @deprecated Use `config.events.onAppReady` instead.
+     */
     events_onAppReady: Function,
+    /**
+     * @deprecated Use `config.events.onDocumentStateChange` instead.
+     */
     events_onDocumentStateChange: Function,
+    /**
+     * @deprecated Use `config.events.onMetaChange` instead.
+     */
     events_onMetaChange: Function,
+    /**
+     * @deprecated Use `config.events.onDocumentReady` instead.
+     */
     events_onDocumentReady: Function,
+    /**
+     * @deprecated Use `config.events.onInfo` instead.
+     */
     events_onInfo: Function,
+    /**
+     * @deprecated Use `config.events.onWarning` instead.
+     */
     events_onWarning: Function,
+    /**
+     * @deprecated Use `config.events.onError` instead.
+     */
     events_onError: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSharingSettings` instead.
+     */
     events_onRequestSharingSettings: Function,
+    /**
+     * @deprecated Use `config.events.onRequestRename` instead.
+     */
     events_onRequestRename: Function,
+    /**
+     * @deprecated Use `config.events.onMakeActionLink` instead.
+     */
     events_onMakeActionLink: Function,
+    /**
+     * @deprecated Use `config.events.onRequestInsertImage` instead.
+     */
     events_onRequestInsertImage: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSaveAs` instead.
+     */
     events_onRequestSaveAs: Function,
     /**
-     * @deprecated Deprecated since version 7.5, please use events_onRequestSelectSpreadsheet instead.
+     * @deprecated Deprecated since version 7.5, please use `config.events.onRequestSelectSpreadsheet` instead.
      */
     events_onRequestMailMergeRecipients: Function,
     /**
-     * @deprecated Deprecated since version 7.5, please use events_onRequestSelectDocument instead.
+     * @deprecated Deprecated since version 7.5, please use `config.events.onRequestSelectDocument` instead.
      */
     events_onRequestCompareFile: Function,
+    /**
+     * @deprecated Use `config.events.onRequestEditRights` instead.
+     */
     events_onRequestEditRights: Function,
+    /**
+     * @deprecated Use `config.events.onRequestHistory` instead.
+     */
     events_onRequestHistory: Function,
+    /**
+     * @deprecated Use `config.events.onRequestHistoryClose` instead.
+     */
     events_onRequestHistoryClose: Function,
+    /**
+     * @deprecated Use `config.events.onRequestHistoryData` instead.
+     */
     events_onRequestHistoryData: Function,
+    /**
+     * @deprecated Use `config.events.onRequestRestore` instead.
+     */
     events_onRequestRestore: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSelectSpreadsheet` instead.
+     */
     events_onRequestSelectSpreadsheet: Function,
+    /**
+     * @deprecated Use `config.events.onRequestSelectDocument` instead.
+     */
     events_onRequestSelectDocument: Function,
+    /**
+     * @deprecated Use `config.events.onRequestUsers` instead.
+     */
     events_onRequestUsers: Function,
+  },
+  data() {
+    return {
+      cancelled: false,
+      lastConfig: null as Config | null
+    };
   },
   mounted() {
     let url = this.documentServerUrl;
@@ -103,11 +202,19 @@ export default defineComponent({
     }
 
     loadScript(docsApiUrl, "onlyoffice-api-script")
-      .then(() => this.onLoad())
-      .catch(()=> {this.onError(-2)});
+      .then(() => {
+        if (this.cancelled) return;
+        this.onLoad();
+      })
+      .catch(()=> {
+        if (this.cancelled) return;
+        this.onError(-2);
+      });
   },
-  unmounted() {
+  beforeUnmount() {
     const id = this.id || "";
+
+    this.cancelled = true;
 
     if (window?.DocEditor?.instances[id]) {
       window.DocEditor.instances[id].destroyEditor();
@@ -117,6 +224,8 @@ export default defineComponent({
   watch: {
     config: {
       handler: function (newVal, oldVal) {
+        if (isSameConfig(this.config, this.lastConfig)) return;
+
         this.onChangeProps()     
       },
       deep: true
@@ -134,7 +243,10 @@ export default defineComponent({
        try {
         const id = this.id || "";
 
-        if (!window.DocsAPI) this.onError(-3);
+        if (!window.DocsAPI) {
+          this.onError(-3);
+          return;
+        }
         if (window?.DocEditor?.instances[id]) {
           console.log("Skip loading. Instance already exists", id);
           return;
@@ -145,6 +257,8 @@ export default defineComponent({
         }
 
         var cloneConfig = cloneDeep(this.config);
+
+        this.lastConfig = markRaw(cloneDeep(this.config));
 
         var propsConfig: any = {
           documentType: this.documentType,
@@ -244,7 +358,7 @@ export default defineComponent({
     },
     onAppReady() {
       const id = this.id || "";
-      this.events_onAppReady!(window.DocEditor.instances[id]);
+      this.events_onAppReady!(window.DocEditor?.instances[id] || {});
     },
     onChangeProps () {
       const id = this.id || "";

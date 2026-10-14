@@ -1,3 +1,10 @@
 node_modules
 lib
 storybook-static
+
+# E2E test app (separate nested npm project)
+/e2e/node_modules
+/e2e/.tmp
+/e2e/dist
+/e2e/playwright-report
+/e2e/test-results

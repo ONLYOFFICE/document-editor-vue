@@ -1,6 +1,6 @@
 {
   "name": "@onlyoffice/document-editor-vue",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Vue component for ONLYOFFICE Document Server",
   "license": "Apache-2.0",
   "bugs": {
@@ -24,10 +24,12 @@
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs",
     "test": "jest",
+    "test:e2e": "npm --prefix e2e ci && npm --prefix e2e run test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
+    "@onlyoffice/doceditor-types": ">=9.3.1",
     "vue": "^3.0.0"
   },
   "dependencies": {
@@ -37,6 +39,7 @@
     "@babel/core": "^7.26.10",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
+    "@onlyoffice/doceditor-types": "^9.3.1",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
@@ -47,30 +50,37 @@
     "@storybook/test": "^8.6.8",
     "@storybook/vue3": "^8.6.8",
     "@storybook/vue3-webpack5": "^8.6.8",
-    "@types/jest": "^29.5.14",
+    "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.16",
     "@vue/compiler-sfc": "^3.5.13",
     "@vue/test-utils": "^2.4.6",
     "@vue/vue3-jest": "^29.2.6",
+    "babel-jest": "^30.5.2",
     "babel-loader": "^10.0.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "lefthook": "^1.11.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "rollup": "^4.37.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
     "rollup-plugin-vue": "^6.0.0",
     "storybook": "^8.6.8",
-    "ts-jest": "^29.3.0",
+    "ts-jest": "^29.4.14",
     "typescript": "~5.8.2",
     "vue": "^3.5.13",
     "vue-loader": "^17.4.2"
   },
   "overrides": {
     "braces": "3.0.3",
-    "micromatch": "4.0.8"
+    "micromatch": "4.0.8",
+    "uuid": "^11.1.1",
+    "webpack-dev-middleware": "^7.4.5",
+    "@vue/vue3-jest": {
+      "jest": "$jest",
+      "babel-jest": "$babel-jest"
+    }
   },
   "keywords": [
     "onlyoffice"

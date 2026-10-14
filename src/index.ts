@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2025
+* (c) Copyright Ascensio System SIA 2026
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@
 */
 
 import DocumentEditor from "./components/DocumentEditor.vue";
+import DocumentEditorPreload from "./components/DocumentEditorPreload.vue";
 
-export { DocumentEditor };
-export * from "./model/config";
+export { DocumentEditor, DocumentEditorPreload };
