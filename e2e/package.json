@@ -13,9 +13,9 @@
   "devDependencies": {
     "@onlyoffice/doceditor-types": "^9.3.1",
     "@playwright/test": "^1.62.1",
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^6.0.10",
     "typescript": "~5.8.2",
-    "vite": "^5.4.11",
+    "vite": "^8.3.4",
     "vue": "^3.5.13"
   }
 }
