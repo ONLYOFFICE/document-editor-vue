@@ -19,10 +19,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
-      - name: Install NodeJS
+      - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version-file: '.nvmrc'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            e2e/package-lock.json
       - name: Install workspace dependencies
         if: env.E2E_LIB_VERSION == ''
         run: npm ci
