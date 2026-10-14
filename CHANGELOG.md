@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## 1.7.0
 - added DocumentEditorPreload component for caching the editor static assets before a document is opened (ONLYOFFICE Docs 9.0 and later)
 - deprecated the legacy flat props (document_fileType, document_title, documentType, editorConfig_lang, height, type, width and all events_* callbacks) in favor of the config object
 - fix the editor not being reusable after unmounting the component, for example on a soft navigation
